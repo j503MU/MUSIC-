@@ -241,7 +241,7 @@
 
         /* Fade Out شاشة التحميل */
         .fade-out {
-            animation: fadeOut 1.5s ease forwards;
+            animation: fadeOut 1.0s ease forwards;
         }
 
         @keyframes fadeOut {
@@ -281,7 +281,7 @@
     <!-- صفحة التحميل -->
     <div class="loading-screen" id="loading-screen">
         <div class="top-text"></div>
-        <div class="music-icon">جاري فتح السيرفر</div>
+        <div class="music-icon">يتم فتح السيرفر</div>
         <div class="loading-bar-container">
             <div class="loading-bar"></div>
         </div>
@@ -294,7 +294,7 @@
     <div class="main-content" id="main-content">
         <img src="https://j.top4top.io/p_3547q2n001.png" alt="Music Logo" class="logo-image" />
         <div class="main-title">MUSIC on your server</div>
-        <div class="subtitle">كرمال WOW</div>
+        <div class="subtitle">كرمال ابو مساعد</div>
         <a href="https://discord.gg/muz" class="discord-link" target="_blank" rel="noopener noreferrer">https://discord.gg/muz</a>
     </div>
 
@@ -317,24 +317,28 @@
         setInterval(createParticles, 6000);
         createParticles();
 
-        // الصوت مكتوم بالبداية عشان المتصفح يسمح بالتحميل التلقائي
-        const audio = document.getElementById('background-music');
-        audio.volume = 1.0;
-
-        function enableAudio() {
-            if (audio.muted) {
-                audio.muted = false;
-            }
-            audio.play().catch((err) => {
-                console.log("خطأ في تشغيل الصوت:", err);
-            });
-            window.removeEventListener('click', enableAudio);
-            window.removeEventListener('keydown', enableAudio);
-        }
-
-        // ننتظر أول تفاعل من المستخدم لتشغيل الصوت
-        window.addEventListener('click', enableAudio, { once: true });
-        window.addEventListener('keydown', enableAudio, { once: true });
+        // تشغيل الصوت - دعم FiveM
+        // للاستخدام في FiveM: SendNUIMessage({action = 'playMusic'})
+        // لإيقاف: SendNUIMessage({action = 'stopMusic'})
+        // للتحكم بالصوت: SendNUIMessage({action = 'setVolume', volume = 0.5})
+        const a = document.getElementById('background-music');
+        const play = () => { a.muted = false; a.play().catch(() => {}); };
+        
+        // استماع لرسائل FiveM
+        window.addEventListener('message', (e) => {
+            if (e.data.action === 'playMusic') play();
+            if (e.data.action === 'stopMusic') { a.pause(); a.currentTime = 0; }
+            if (e.data.action === 'setVolume') a.volume = e.data.volume || 1;
+        });
+        
+        // تشغيل تلقائي عند تحميل الصفحة (لـ FiveM)
+        a.addEventListener('canplay', () => { 
+            setTimeout(() => play(), 500);
+        });
+        
+        // تشغيل عند تفاعل المستخدم
+        addEventListener('click', play, { once: true });
+        addEventListener('keydown', play, { once: true });
 
         // شريط التحميل يتحكم بالانتقال بين الصفحات
         const loadingBar = document.querySelector('.loading-bar');
@@ -374,4 +378,5 @@
     </script>
 </body>
 </html>
+
 
