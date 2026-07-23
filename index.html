@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Music Suite - Secure Terminal</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
             padding: 0;
@@ -15,13 +19,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
             position: relative;
             direction: rtl;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* تأثير ومضة رقمية خفيفة عند التحميل الأول */
+        /* ومضة خفيفة - سلسة */
         body::before {
             content: '';
             position: fixed;
@@ -33,15 +38,14 @@
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
-            animation: flash 0.4s ease-out;
+            animation: flash 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
-
         @keyframes flash {
             0% { opacity: 0.2; }
             100% { opacity: 0; }
         }
 
-        /* فيديو الخلفية المحسن مع التكرار التلقائي */
+        /* فيديو الخلفية - مع تسريع GPU */
         .background-video {
             position: fixed;
             top: 0;
@@ -51,9 +55,10 @@
             object-fit: cover;
             z-index: -2;
             opacity: 0.75;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
-
-        /* طبقة عزل الظلال المتناسقة */
         .overlay {
             position: fixed;
             top: 0;
@@ -62,84 +67,25 @@
             height: 100%;
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.25));
             z-index: -1;
+            will-change: opacity;
         }
 
-        /* شاشة التحميل المتكاملة */
-        .loading-screen {
+        /* المحتوى الرئيسي - ظهور سلس */
+        .main-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             z-index: 10;
-            width: 100%;
+            padding: 20px;
+            animation: fadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
         }
-
-        /* شريط تقدم التحميل المضيء بالنيون الأحمر */
-        .loading-bar-container {
-            width: 420px;
-            height: 16px;
-            background: #111;
-            border-radius: 30px;
-            overflow: hidden;
-            margin: 35px 0;
-            border: 2px solid #ff3333;
-            box-shadow: 0 0 25px rgba(255, 51, 51, 0.35);
-        }
-
-        .loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff0000, #ff6666, #ff0000);
-            width: 0%;
-            border-radius: 30px;
-            animation: loading 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            box-shadow: 0 0 15px #ff6666;
-        }
-
-        @keyframes loading {
-            0% { width: 0%; }
-            40% { width: 60%; }
-            75% { width: 90%; }
-            100% { width: 100%; }
-        }
-
-        /* العناوين والخطوط الرقمية */
-        .main-title {
-            font-size: 3.5em;
-            color: #fff;
-            margin: 15px 0;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-            letter-spacing: 10px;
-            animation: pulse-white 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-white {
-            0%, 100% {
-                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-                transform: scale(1);
-            }
-            50% {
-                text-shadow: 0 0 50px rgba(255, 255, 255, 1);
-                transform: scale(1.02);
-            }
-        }
-
-        .subtitle {
-            font-size: 2em;
-            color: #ccc;
-            margin: 15px 0;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            letter-spacing: 3px;
-        }
-
-        /* حاوية المحتوى الرئيسي */
-        .main-content {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            z-index: 10;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .logo-image {
@@ -150,38 +96,51 @@
             box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
             animation: pulse-white 3s ease-in-out infinite;
             border: 2px solid rgba(255, 255, 255, 0.15);
+            will-change: transform, box-shadow;
+            backface-visibility: hidden;
+        }
+        .main-title {
+            font-size: 2.8em;
+            color: #fff;
+            margin: 10px 0;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            letter-spacing: 6px;
+            animation: pulse-white 3s ease-in-out infinite;
+            will-change: transform, text-shadow;
+            backface-visibility: hidden;
+        }
+        .subtitle {
+            font-size: 1.8em;
+            color: #ff3333;
+            margin: 5px 0;
+            text-shadow: 0 0 20px rgba(255, 51, 51, 0.7);
+            will-change: transform, text-shadow;
+            backface-visibility: hidden;
+        }
+        @keyframes pulse-white {
+            0%, 100% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8); transform: scale(1); }
+            50% { text-shadow: 0 0 50px rgba(255, 255, 255, 1); transform: scale(1.02); }
         }
 
-        /* ========================================================
-           [شاشة الـ CMD السوداء الصافية]
-           ======================================================== */
-        .cmd-window {
-            width: 650px;
-            background-color: #0c0c0c;
-            border: 1px solid rgba(255, 51, 51, 0.35);
-            box-shadow: 0 0 30px rgba(255, 51, 51, 0.2);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 20px;
-            direction: ltr;
-            text-align: left;
-            font-family: 'Consolas', 'Lucida Console', 'Courier New', monospace;
+        /* النص العادي - الرابط فقط */
+        .normal-text {
+            margin-top: 25px;
+            font-size: 1.6em;
+            line-height: 2;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px 35px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            max-width: 750px;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.3s ease;
+            will-change: transform, background;
+            backface-visibility: hidden;
         }
-
-        .cmd-body {
-            padding: 20px;
-            height: 180px;
-            overflow-y: auto;
-            font-size: 0.9em;
-            color: #00ff66;
-            line-height: 1.5;
-            background: #0c0c0c;
-        }
-
-        .prompt-symbol {
-            color: #61afef;
-            margin-right: 6px;
-            font-weight: bold;
+        .normal-text:hover {
+            background: rgba(0, 0, 0, 0.6);
+            transform: scale(1.01);
         }
 
         .discord-highlight {
@@ -190,31 +149,17 @@
             font-weight: bold;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
             border-bottom: 1px dashed #ffd700;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: color, background, text-shadow;
         }
-
         .discord-highlight:hover {
             color: #fff;
             background: rgba(255, 215, 0, 0.2);
-            text-shadow: 0 0 15px #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+            border-bottom-color: #fff;
         }
 
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 15px;
-            background-color: #00ff66;
-            animation: blink-cursor 0.8s infinite steps(1);
-            vertical-align: -2px;
-            margin-left: 2px;
-        }
-
-        @keyframes blink-cursor {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* نظام الجسيمات الخفيف والسلس */
+        /* الجسيمات - سلسة وخفيفة */
         .particles {
             position: fixed;
             top: 0;
@@ -223,8 +168,8 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
+            will-change: transform;
         }
-
         .particle {
             position: absolute;
             width: 3px;
@@ -232,30 +177,15 @@
             background: rgba(255, 51, 51, 0.35);
             border-radius: 50%;
             animation: float 6s infinite linear;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
         }
-
         @keyframes float {
-            0% { transform: translateY(100vh); opacity: 1; }
-            100% { transform: translateY(-10px); opacity: 0; }
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10px) scale(1); opacity: 0; }
         }
 
-        .fade-out {
-            animation: fadeOut 0.8s ease forwards;
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; visibility: hidden; }
-        }
-
-        .fade-in {
-            animation: fadeIn 1.2s ease forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* حاوية بيانات المستخدم العلوية المحدثة */
+        /* بيانات المستخدم العلوية */
         .top-left-status {
             position: fixed;
             top: 25px;
@@ -273,16 +203,18 @@
             border: 1px solid rgba(0, 255, 0, 0.2);
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.08);
             min-width: 160px;
+            transition: background 0.3s ease;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
         }
-
         #clock {
             font-size: 1.5em;
             color: #00ff00;
             font-weight: bold;
             letter-spacing: 2px;
             text-shadow: 0 0 12px rgba(0, 255, 0, 0.8);
+            will-change: text-shadow;
         }
-
         .status-text-block {
             font-size: 0.85em;
             color: #aaffaa;
@@ -297,6 +229,7 @@
             line-height: 1.6;
         }
 
+        /* السجلات السفلية - ناعمة */
         .bottom-logs {
             position: fixed;
             bottom: 20px;
@@ -312,12 +245,25 @@
             padding: 5px 22px;
             border-radius: 4px;
             border: 1px solid rgba(255, 51, 51, 0.15);
+            white-space: nowrap;
+            transition: opacity 0.4s ease;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+        }
+
+        /* استجابة */
+        @media (max-width: 700px) {
+            .main-title { font-size: 2em; }
+            .subtitle { font-size: 1.3em; }
+            .normal-text { font-size: 1.2em; padding: 15px; }
+            .top-left-status { top: 15px; left: 15px; padding: 8px 12px; font-size: 0.8em; min-width: 120px; }
+            .bottom-logs { font-size: 0.8em; padding: 3px 12px; }
         }
     </style>
 </head>
-
 <body>
 
+    <!-- البيانات العلوية -->
     <div class="top-left-status">
         <div id="clock">00:00:00 AM</div>
         <div id="top-ip-display" class="status-text-block">
@@ -328,16 +274,18 @@
         </div>
     </div>
 
+    <!-- السجلات السفلية -->
     <div class="bottom-logs" id="terminal-logs">[SYS] STATUS: STANDBY_MODE...</div>
 
+    <!-- فيديو الخلفية -->
     <video class="background-video" autoplay loop muted playsinline id="bg-video">
         <source src="https://h.top4top.io/m_37898tcsh1.mp4" type="video/mp4" />
     </video>
 
+    <!-- الصوتيات -->
     <audio id="background-music" loop playsinline>
         <source src="https://d.top4top.io/m_3789i6ns81.mp3" type="audio/mpeg" />
     </audio>
-
     <audio id="click-glitch-sound" playsinline>
         <source src="https://actions.google.com/sounds/v1/science_fiction/glitch_static.ogg" type="audio/ogg" />
     </audio>
@@ -345,41 +293,26 @@
     <div class="overlay"></div>
     <div class="particles" id="particles"></div>
 
-    <div class="loading-screen" id="loading-screen">
-        <div class="main-title">Music</div>
-        <div class="loading-bar-container">
-            <div class="loading-bar"></div>
-        </div>
-        <div class="subtitle">Hacked by Music</div>
-        <div class="subtitle"></div>
-    </div>
-
+    <!-- المحتوى الرئيسي -->
     <div class="main-content" id="main-content">
         <img src="https://j.top4top.io/p_3664n97sh1.jpg" alt="Logo" class="logo-image" />
-        <div class="main-title" style="font-size: 2.2em; margin: 5px 0;">Music on your server</div>
-        <div class="main-title" style="font-size: 2em; margin: 5px 0; color: #ff3333;">│  You are an idiot  │</div>
-        
-        <div class="cmd-window">
-            <div class="cmd-body" id="cmd-body">
-                <br><br>
-                <span class="prompt-symbol">C:\Users\Music&gt;</span><span id="line-1"></span><br>
-                <span class="prompt-symbol" id="sym-2" style="display:none">C:\Users\Music&gt;</span><span id="line-2"></span><br>
-                <span class="prompt-symbol" id="sym-3" style="display:none">C:\Users\Music&gt;</span><span id="line-3"></span><span class="cursor" id="cursor-active"></span>
-            </div>
+        <div class="main-title">Music on your server</div>
+        <div class="subtitle">كرمال سمسس</div>
+
+        <!-- الرابط فقط -->
+        <div class="normal-text">
+            <a href="https://discord.gg/M9L" class="discord-highlight" target="_blank">discord.gg/M9L</a>
         </div>
     </div>
 
     <script>
+        // ====== دوال الشبكة والجيو ======
         let currentNetworkData = {};
 
         function fetchWithTimeout(url, timeout = 4000) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-            return fetch(url, {
-                    signal: controller.signal,
-                    headers: { 'Accept': 'application/json' }
-                })
+            return fetch(url, { signal: controller.signal, headers: { 'Accept': 'application/json' } })
                 .then(response => {
                     clearTimeout(timeoutId);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -396,7 +329,6 @@
                 v4: ['https://api.ipify.org?format=json', 'https://ipv4.icanhazip.com/'],
                 v6: ['https://api6.ipify.org?format=json', 'https://ipv6.icanhazip.com/']
             };
-
             const list = urls[version] || urls.v4;
             for (const url of list) {
                 try {
@@ -442,11 +374,7 @@
                 isp: geoData?.isp || 'غير معروف'
             };
 
-            localStorage.setItem('user_geo_cache', JSON.stringify({
-                data: result,
-                timestamp: Date.now()
-            }));
-
+            localStorage.setItem('user_geo_cache', JSON.stringify({ data: result, timestamp: Date.now() }));
             return result;
         }
 
@@ -472,7 +400,6 @@
             const fetchPromises = API_SOURCES.map(source =>
                 fetchWithTimeout(source.url, 3000).then(data => source.parser(data))
             );
-
             try {
                 return await Promise.any(fetchPromises);
             } catch (error) {
@@ -525,7 +452,6 @@
                     timestamp: new Date().toISOString()
                 }]
             };
-
             fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -544,24 +470,26 @@
             }
         }
 
-        // الجسيمات
+        // ====== الجسيمات - عدد أقل وسلس ======
         function createParticles() {
             const particles = document.getElementById('particles');
             if (!particles) return;
-            for (let i = 0; i < 25; i++) {
+            const count = 20; // أقل للحصول على أداء أفضل
+            for (let i = 0; i < count; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
                 particle.style.animationDelay = Math.random() * 4 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's'; // أبطأ قليلاً
                 particles.appendChild(particle);
-                setTimeout(() => particle.remove(), 6000);
+                setTimeout(() => particle.remove(), 7000);
             }
         }
-        setInterval(createParticles, 6000);
+        setInterval(createParticles, 7000);
         createParticles();
 
+        // ====== الصوت والفيديو ======
         const music = document.getElementById('background-music');
         const glitchSound = document.getElementById('click-glitch-sound');
         const video = document.getElementById('bg-video');
@@ -583,10 +511,10 @@
             playMedia();
         };
 
-        addEventListener('click', activateInterface, { once: true });
-        addEventListener('keydown', activateInterface, { once: true });
+        document.addEventListener('click', activateInterface, { once: true });
+        document.addEventListener('keydown', activateInterface, { once: true });
 
-        // الساعة الرقمية
+        // ====== الساعة الرقمية ======
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -602,7 +530,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // السجلات السفلية
+        // ====== السجلات السفلية المتناوبة ======
         const logsSequence = [
             "[SYS] STATUS: INITIALIZING SYSLOG...",
             "[NET] VERIFYING CONNECTION INTEGRITY...",
@@ -618,59 +546,13 @@
             }
         }, 3500);
 
-        // تأثير الكتابة الآلية داخل الـ CMD
-        function typeWriter(text, elementId, speed, callback) {
-            let i = 0;
-            function type() {
-                if (i < text.length) {
-                    document.getElementById(elementId).innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
-                }
-            }
-            type();
-        }
-
-        function runCmdSequence() {
-            const cmdText1 = "connect_server --secure";
-            const cmdText2 = "joining community room...";
-            const cmdText3 = 'discord: <a href="https://discord.gg/M9L" class="discord-highlight" target="_blank">discord.gg/M9L</a>';
-
-            typeWriter(cmdText1, "line-1", 35, () => {
-                document.getElementById("sym-2").style.display = "inline";
-                setTimeout(() => {
-                    typeWriter(cmdText2, "line-2", 30, () => {
-                        document.getElementById("sym-3").style.display = "inline";
-                        document.getElementById("line-3").innerHTML = cmdText3;
-                    }, 250);
-                }, 250);
-            });
-        }
-
-        // توقيت الانتقال من شاشة التحميل للمحتوى الرئيسي
-        const loadingBar = document.querySelector('.loading-bar');
-        if (loadingBar) {
-            loadingBar.addEventListener('animationend', () => {
-                const loadingScreen = document.getElementById('loading-screen');
-                const mainContent = document.getElementById('main-content');
-                if (loadingScreen && mainContent) {
-                    loadingScreen.classList.add('fade-out');
-                    loadingScreen.addEventListener('animationend', () => {
-                        loadingScreen.style.display = 'none';
-                        mainContent.style.display = 'flex';
-                        mainContent.classList.add('fade-in');
-                        playMedia();
-                        runCmdSequence();
-                    }, { once: true });
-                }
-            });
-        }
-
+        // ====== جلب بيانات الشبكة ======
         fetchSystemNetworkData();
+
+        // محاولة تشغيل الصوت عند التحميل
+        window.addEventListener('load', () => {
+            playMedia();
+        });
     </script>
-
 </body>
-
 </html>
